@@ -23,4 +23,4 @@ https://github.com/open-science-org/OIPs/issues/7
 https://github.com/open-science-org/OIPs/issues/8
 
 **OIP-7: Decentralized publishing as a cascade of information filters modeled by TCRs.**  
-https://github.com/open-science-org/OIPs/issues/8
+https://github.com/open-science-org/OIPs/issues/9
