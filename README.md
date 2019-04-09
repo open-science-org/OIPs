@@ -22,3 +22,5 @@ https://github.com/open-science-org/OIPs/issues/7
 **OIP-6: IdeaBoard - a discussion board to discuss research ideas and news.**  
 https://github.com/open-science-org/OIPs/issues/8
 
+**OIP-7: Decentralized publishing as a cascade of information filters modeled by TCRs.**  
+https://github.com/open-science-org/OIPs/issues/8
