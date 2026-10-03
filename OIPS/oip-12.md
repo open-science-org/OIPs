@@ -19,6 +19,14 @@ OSO is a small fixed core with replaceable modules. This OIP defines the core's 
 
 Between 2018 and 2020, OSO's storage layer changed three times (IPFS, OrbitDB, libtorrent) and each change meant starting over. Different research communities also need different rules: validator counts, review policies, retention rates. A fixed module interface lets parts be replaced and customized without breaking the protocol or other communities.
 
+### Prior work
+
+- [OSO: An Idea Platform v0.3 (2018), §1](https://github.com/open-science-org/wiki/blob/52ba175b3bc57a8c08297c4e4a3db835ea2edbde/OSO_Idea_Platform_whitepaper.pdf): sub-networks and channels with their own rules for selectivity and review.
+- [Proof of Idea v0.0 (2018), Figure 2](https://github.com/open-science-org/wiki/blob/52ba175b3bc57a8c08297c4e4a3db835ea2edbde/Proof_of_Idea.pdf): sub-networks (layer 4) with their own review and reward-sharing rules.
+- [Technical design v0 (2018)](https://github.com/open-science-org/OSO/blob/898ee42ebeb9ea7248214fa7c508a318df144d5d/OSO_design_v0.pdf): idea-flow logic kept modular and separate from storage.
+- [OIP-5: Custom validation layers](./oip-5.md) and [OIP-7: Publishing as a cascade of TCRs](./oip-7.md): community-defined rules, capture, and forking.
+- [idea-hub issues #5 (2018), #17 (2019) and #24 (2020)](https://github.com/open-science-org/idea-hub/issues/24): successive storage designs (a distributed metadata store, OrbitDB, torrents) that show why parts must be replaceable.
+
 ## Specification
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174.
@@ -27,7 +35,7 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 The core consists of:
 
-1. The idea format: stable work ID, immutable version IDs, the registry fields of OIP-10.
+1. The idea object: stable work ID, immutable versions and the registry record ([OIP-16](./oip-16.md)).
 2. The transaction envelope and block format (OIP-13).
 3. Accounts, OSO supply and the mint (OIP-8), and the payout graph and waterfall (OIP-14).
 4. The module interface and dispatcher defined here.

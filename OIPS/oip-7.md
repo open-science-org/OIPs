@@ -23,6 +23,8 @@ The layers of Proof of Idea (spam filter, peer review, public review, sub-networ
 
 **Later developments.** The v1 design keeps the cascade idea through communities, channels and replaceable Validation and Review modules, without committing to TCRs.
 
+**Related past work.** [Proof of Idea v0.0 (2018), Figure 2](https://github.com/open-science-org/wiki/blob/52ba175b3bc57a8c08297c4e4a3db835ea2edbde/Proof_of_Idea.pdf) (the layers of curation); [idea-hub issue #18](https://github.com/open-science-org/idea-hub/issues/18) (using an existing TCR implementation). Now covered by [OIP-11](./oip-11.md), [OIP-12](./oip-12.md) and [OIP-17](./oip-17.md).
+
 ## Security Considerations
 
 Not discussed in the issue. Token-weighted curation can be captured by large token holders.

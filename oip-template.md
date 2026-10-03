@@ -26,6 +26,10 @@ requires: <OIP number(s)> # Only if the Specification depends on another OIP; ot
 
 <!-- Optional. The problem this OIP solves and why existing OIPs do not solve it. -->
 
+### Prior work
+
+<!-- Recommended. Earlier OSO papers, repositories, issues and OIPs this builds on, each with a link (repository links pinned to a commit) and one line on what it contributed. -->
+
 ## Specification
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174.

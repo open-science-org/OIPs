@@ -32,6 +32,8 @@ The process is modeled on Ethereum's EIPs. Read [OIP-0: OIP purpose and guidelin
 | [13](OIPS/oip-13.md) | Public ledger and migration path | Core | Draft |
 | [14](OIPS/oip-14.md) | Idea attribution and value flow | Core | Draft |
 | [15](OIPS/oip-15.md) | AI services, models and costs | Module | Draft |
+| [16](OIPS/oip-16.md) | Idea object | Core | Draft |
+| [17](OIPS/oip-17.md) | Peer review | Module | Draft |
 
 ### Informational
 

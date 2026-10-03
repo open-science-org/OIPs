@@ -23,6 +23,8 @@ The discussion argued that customization always introduces a bias toward some go
 
 **Later developments.** The v1 design makes community setups public and versioned, and lets a community fork a setup and keep its ideas.
 
+**Related past work.** [OSO: An Idea Platform v0.3 (2018), §1](https://github.com/open-science-org/wiki/blob/52ba175b3bc57a8c08297c4e4a3db835ea2edbde/OSO_Idea_Platform_whitepaper.pdf) (sub-networks and channels); [Proof of Idea v0.0 (2018), Figure 2](https://github.com/open-science-org/wiki/blob/52ba175b3bc57a8c08297c4e4a3db835ea2edbde/Proof_of_Idea.pdf) (layer 4); [OIP-7](./oip-7.md). Now covered by [OIP-12](./oip-12.md).
+
 ## Security Considerations
 
 Capture of an established channel or sub-network by a group that changes its rules.

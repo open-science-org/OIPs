@@ -8,16 +8,23 @@ status: Draft
 type: Standards Track
 category: Module
 created: 2026-10-02
-requires: 8, 9, 10, 12, 14
+requires: 8, 9, 10, 12, 14, 16
 ---
 
 ## Abstract
 
-Every new idea goes through validation before peer review. Validation is an **admission check** against stated criteria (provenance, required fields, duplication, spam, plagiarism, domain fit, and plausible parents and weights), not a scientific verdict. An AI pre-screen reports first; then N validators drawn from a published roster vote, and a majority admits the idea. Admission mints the idea's tokens into escrow ([OIP-8](./oip-8.md)). A challenge window follows, during which anyone can contest the admission with evidence. Owners can appeal a rejection or a removal once. Peer review then runs separately: reviewers are matched by expertise ([OIP-9](./oip-9.md)), reviews are themselves ideas, and ratings keep updating. This OIP is the reference implementation of the Validation and Review modules.
+Every new idea goes through validation before peer review. Validation is an **admission check** against stated criteria (provenance, required fields, duplication, spam, plagiarism, domain fit, and plausible parents and weights), not a scientific verdict. An AI pre-screen reports first; then N validators drawn from a published roster vote, and a majority admits the idea. Admission mints the idea's tokens into escrow ([OIP-8](./oip-8.md)). A challenge window follows, during which anyone can contest the admission with evidence. Owners can appeal a rejection or a removal once. Peer review then runs separately under [OIP-17](./oip-17.md). This OIP is the reference implementation of the Validation module.
 
 ## Motivation
 
 Minting on validation makes the admission gate the main defense against spam, including cheap AI-generated papers. The 2018 Proof of Idea described validation in outline but did not define states, deadlines, conflicts, appeals, or what happens when there are too few validators.
+
+### Prior work
+
+- [Proof of Idea v0.0 (2018), §2.1–2.3 and §3](https://github.com/open-science-org/wiki/blob/52ba175b3bc57a8c08297c4e4a3db835ea2edbde/Proof_of_Idea.pdf): submission and validation of ideas by N validators with a consensus threshold, and the first attack vectors (file size, idea flooding, Sybil identities).
+- [OIP-4: Validator merit](./oip-4.md), [OIP-5: Custom validation layers](./oip-5.md) and [OIP-7: Publishing as a cascade of TCRs](./oip-7.md): incentives for validators, community rules, and validation as curated lists.
+- [idea-hub issue #18 (2019)](https://github.com/open-science-org/idea-hub/issues/18): a first version of validation layer 1, possibly built on token-curated registries.
+- [idea-hub pull request #33 (2020)](https://github.com/open-science-org/idea-hub/pull/33): a Solidity contract with an idea state diagram for registration, validation and publication.
 
 ## Specification
 
@@ -93,19 +100,15 @@ Transitions caused by elapsed blocks (deadlines, window closings) run in block-e
 6. A second appeal on the same idea version MUST be rejected.
 7. **After publication.** A plagiarism challenge MAY also be filed against a Published idea, decided as in items 2 and 5. If upheld and not reversed on appeal, the idea moves to Retracted: it stays visible and marked as retracted; it MUST NOT be a parent in any new weight set; incoming value it would retain MUST instead be passed to its parents as if α were 0; and the owners receive the misconduct penalty in OIP-9. Value released before retraction is not clawed back in v1.
 
-### 6. Peer review
+### 6. Peer review and new versions
 
-1. Review starts when an idea is Admitted and continues after it is Published.
-2. Reviewers MUST be matched by their weight in the idea's domain (OIP-9), with the conflict rules in section 3.
-3. A review MUST be registered as an idea linked to the reviewed idea by a review link, which moves no value. A review MUST record its claims, evidence, uncertainties and a recommendation (accept, revise, or concerns). Reviews do not mint (OIP-8) and are not routed through validation; they are subject to the same plagiarism challenge as other ideas.
-4. A revise recommendation MAY lead the owners to submit a new version. A new version MUST pass the pre-screen. It MUST go through validation again if any of these holds:
+1. Peer review is specified in [OIP-17](./oip-17.md). It starts when an idea is Admitted and continues after it is Published.
+2. A `revise` recommendation (OIP-17 section 8) MAY lead the owners to submit a new version ([OIP-16](./oip-16.md) section 8). A new version MUST pass the pre-screen. It MUST go through validation again if any of these holds:
    - the pre-screen reports that its content differs from the **last validated** version by more than the community's revision threshold (so small changes cannot add up unchecked);
    - the owners change its parents or weights;
    - one validator, drawn as in section 3, does not confirm within V blocks that the change is minor.
 
    Otherwise the new version keeps the last validated version's approved weight set.
-5. Negative reviews and dissent MUST remain public alongside the idea.
-6. Ratings MUST be recorded on the ledger as new reviews, replications and downstream use arrive. How ratings are aggregated is left to a later OIP; until then, interfaces show the individual reviews.
 
 ### 7. Parameters
 
@@ -139,7 +142,6 @@ All parameters are community parameters (OIP-12).
 1. Should the challenge window differ by community size?
 2. How should the revision threshold be measured?
 3. When should N_ch move to 2N+1?
-4. How should ratings be aggregated, and should they ever affect value?
 
 ## Backwards Compatibility
 

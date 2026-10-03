@@ -19,6 +19,15 @@ Voting weight in OSO comes from reputation, never from token balances. This OIP 
 
 The 2018 Idea Platform whitepaper defined an expertise score e_D and a reputation score r_S but left their functions open. [OIP-8](./oip-8.md) requires that voting weight not derive from token holdings. Validation, review matching and governance all need a concrete, reproducible weight. Two failure modes shape the design: weight that can be bought, and weight that rewards agreeing with the majority.
 
+### Prior work
+
+- [OSO white paper (2017), §3.2 and §3.3](https://github.com/open-science-org/wiki/blob/52ba175b3bc57a8c08297c4e4a3db835ea2edbde/OSO_white_paper.pdf): expertise of an entity in a research domain (the e-value) and its role in voting.
+- [OSO: An Idea Platform v0.3 (2018), §3.2](https://github.com/open-science-org/wiki/blob/52ba175b3bc57a8c08297c4e4a3db835ea2edbde/OSO_Idea_Platform_whitepaper.pdf): a user's identity, expertise score e_D and reputation score r_S, with their functions left open.
+- [Technical design v0 (2018)](https://github.com/open-science-org/OSO/blob/898ee42ebeb9ea7248214fa7c508a318df144d5d/OSO_design_v0.pdf): researcher profiles with reputation and expertise scores, universal and per domain.
+- [GIP attack-vector questions](https://github.com/open-science-org/GIP/blob/78456634f6d9a0170887fa5b0d01eacd804b5fb6/AttackVectorQuestions.md): reputation as a vector of scores updated from a user's activity.
+- [RR-index (2017)](https://github.com/open-science-org/RR-index/blob/a8fe298e76208bc411b28ffba5e014df55304004/README.md): a proposed domain-independent metric of research impact.
+- [OIP-4: Validator merit](./oip-4.md): rewarding careful validators without rewarding conformity.
+
 ## Specification
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174.
@@ -38,7 +47,7 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 | sim(i, D) | Similarity of idea i to domain D, in bps; an AI suggestion recorded on the ledger and open to community correction |
 | use(i) | Total OSO received by idea i **directly** as the cited share of its own children's mints (OIP-8 section 4), in whole OSO (base units divided by 10^18, rounded down). Value passed up the graph from further away, funding and gifts are all excluded. |
 | age(x) | Blocks elapsed since event x |
-| review outcome | Ratings recorded on a review by the reviewed idea's authors and by other reviewers |
+| review rating | Ratings of a review by other users in the domain (OIP-17 section 10) |
 | endorsement | A signed rating of user v by user u in domain D, from 0 to 10,000 bps |
 
 Only direct cited shares of mints count, because value passed up the graph may have started as funding: counting it would let anyone raise a parent's owners' weight by funding one of its children. Mints themselves require an admitted child, so each unit of `use` stands for a validated piece of work that built on idea i.
@@ -61,7 +70,7 @@ E_endorse(u, D) = Σ over endorsements of u in D by v:
 E(u, D)         = E_ideas + E_reviews + E_endorse
 ```
 
-1. `quality(r)` is the mean of the ratings recorded on review r, in bps, excluding ratings by owners of the reviewed idea, so that critical reviews are not marked down by the people they criticize. A review with no counted ratings has quality 5,000.
+1. `quality(r)` is the mean of the review ratings recorded on review r ([OIP-17](./oip-17.md) section 10), which are whole numbers from 0 to 10, converted to bps as `floor( 1,000 × sum of ratings / number of ratings )`, excluding ratings by owners of the reviewed idea, so that critical reviews are not marked down by the people they criticize. A review with no counted ratings has quality 5,000.
 
    With these scales, one review of maximum quality and similarity is worth 10,000 points, and an idea fully owned and fully in D is worth 10,000 × isqrt(use) points: an idea whose children's mints have paid it 100 OSO counts like ten excellent reviews. An endorsement transfers at most k_endorse of the endorser's capped expertise.
 2. `E_prev` is the expertise from the previous round. Using the previous round's value makes the recursion well defined and deterministic.

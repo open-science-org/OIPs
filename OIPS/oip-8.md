@@ -28,6 +28,16 @@ Implementations of the v1 ledger need one exact rule set: every payment MUST pro
 
 This OIP does not cover reputation ([OIP-9](./oip-9.md)), identity and key custody ([OIP-10](./oip-10.md)), validation and challenges ([OIP-11](./oip-11.md)), community parameters ([OIP-12](./oip-12.md)), idea attribution and value flow ([OIP-14](./oip-14.md)), or the ledger format and on-chain migration ([OIP-13](./oip-13.md)).
 
+### Prior work
+
+- [Proof of Idea v0.0 (2018), §1, §2.4 and §2.5](https://github.com/open-science-org/wiki/blob/52ba175b3bc57a8c08297c4e4a3db835ea2edbde/Proof_of_Idea.pdf): no pre-mined assets; minting on validation with a supply cap of 10^12 OSO and reward rate 10^-10; the 50/30/15/5 reward split.
+- [OSO white paper (2017), §3.3 and §3.6](https://github.com/open-science-org/wiki/blob/52ba175b3bc57a8c08297c4e4a3db835ea2edbde/OSO_white_paper.pdf): what voting and tokens mean, and the costs of publication (review, idea, storage).
+- [OSO: An Idea Platform v0.3 (2018), §3.3 and §4.3.3](https://github.com/open-science-org/wiki/blob/52ba175b3bc57a8c08297c4e4a3db835ea2edbde/OSO_Idea_Platform_whitepaper.pdf): the OSO utility token and per-idea IDEA tokens for "divisible ownership in the promise of something from an idea".
+- [Technical design v0 (2018)](https://github.com/open-science-org/OSO/blob/898ee42ebeb9ea7248214fa7c508a318df144d5d/OSO_design_v0.pdf): three options for where tokens live (Ethereum, a child chain, a native chain) and idea wallets owned by researchers.
+- [GIP attack-vector questions](https://github.com/open-science-org/GIP/blob/78456634f6d9a0170887fa5b0d01eacd804b5fb6/AttackVectorQuestions.md): how new researchers acquire OSO, and whether a company could buy influence with tokens.
+- [OIP-3: Funding OSO](./oip-3.md): the risk of token concentration in a few funders.
+- [idea-hub pull request #33 (2020)](https://github.com/open-science-org/idea-hub/pull/33): an unmerged Solidity contract with an ERC-20 token, idea registration, validation and publication.
+
 ## Specification
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174.
@@ -38,7 +48,7 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 | --- | --- |
 | Base unit | The smallest indivisible amount of OSO. 1 OSO = 10^18 base units. |
 | bps | Basis points; 10,000 bps = 100%. |
-| Idea | A registered work with a stable work ID and immutable version IDs. |
+| Idea | A registered work with a stable work ID and immutable version IDs ([OIP-16](./oip-16.md)). |
 | Idea account | The ledger account that receives value for an idea before distribution. |
 | Payout graph | Approved parent links that may move value ([OIP-14](./oip-14.md)). |
 | α (alpha) | The retention rate of an idea, in bps. |

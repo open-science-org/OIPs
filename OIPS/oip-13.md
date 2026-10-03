@@ -19,6 +19,16 @@ In v1 the OSO ledger runs on one operator-run node. Every state change is a sign
 
 OSO wants openness from day one without the cost and complexity of a blockchain before real money is involved. A public, replayable log gives transparency now. Its limits must be stated plainly: the operator orders transactions and can delay or omit them, and GitHub history can be rewritten by administrators.
 
+### Prior work
+
+- [Technical design v0 (2018)](https://github.com/open-science-org/OSO/blob/898ee42ebeb9ea7248214fa7c508a318df144d5d/OSO_design_v0.pdf): options for tokens on Ethereum, a child chain or a native chain, and the Interplanetary Idea System's naming, storage and identity layers.
+- [OSO: An Idea Platform v0.3 (2018), §6](https://github.com/open-science-org/wiki/blob/52ba175b3bc57a8c08297c4e4a3db835ea2edbde/OSO_Idea_Platform_whitepaper.pdf): smart contracts on Ethereum as a settlement layer, IPFS storage, and minimal use of the blockchain.
+- [Proof of Idea v0.0 (2018), §4](https://github.com/open-science-org/wiki/blob/52ba175b3bc57a8c08297c4e4a3db835ea2edbde/Proof_of_Idea.pdf): the first implementation, two contracts on the Ethereum Ropsten testnet.
+- [OIP-1: IPFS integration and platform UI](./oip-1.md): storing content off-chain and only its address on-chain.
+- [idea-hub issues #24 and #26 (2020)](https://github.com/open-science-org/idea-hub/issues/24): the 2020 stack and its REST API ([#26](https://github.com/open-science-org/idea-hub/issues/26)).
+- [idea-hub pull request #33 (2020)](https://github.com/open-science-org/idea-hub/pull/33): the unmerged Solidity contract.
+- [admin issue #7 (2017)](https://github.com/open-science-org/admin/issues/7): a multisig wallet for OSO, and early caution about wallet contract bugs.
+
 ## Specification
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174.

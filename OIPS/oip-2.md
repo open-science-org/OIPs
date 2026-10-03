@@ -23,6 +23,8 @@ The issue argued that a grant would provide funding and signal to the scientific
 
 **Later developments.** The v1 roadmap places the first outside funding at milestone M3, after a legal entity exists.
 
+**Related past work.** [OSO white paper (2017), §3.4](https://github.com/open-science-org/wiki/blob/52ba175b3bc57a8c08297c4e4a3db835ea2edbde/OSO_white_paper.pdf) (open, democratic funding); [OIP-3](./oip-3.md). Identity is now covered by [OIP-10](./oip-10.md).
+
 ## Security Considerations
 
 None specific.

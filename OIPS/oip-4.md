@@ -23,6 +23,8 @@ The discussion described the basic layer as a spam filter, like the vetting step
 
 **Later developments.** The v1 design treats validation as an admission check against stated criteria, pays validators for voting on time regardless of their vote ([OIP-8](./oip-8.md)), and sanctions only admission decisions overturned on challenge, never scientific disagreement.
 
+**Related past work.** [Proof of Idea v0.0 (2018), §2.3 and §2.5](https://github.com/open-science-org/wiki/blob/52ba175b3bc57a8c08297c4e4a3db835ea2edbde/Proof_of_Idea.pdf) (validation and the validators' 5%); [idea-hub issue #18](https://github.com/open-science-org/idea-hub/issues/18) (a first validation layer). Now covered by [OIP-8](./oip-8.md) section 4a, [OIP-9](./oip-9.md) section 5 and [OIP-11](./oip-11.md).
+
 ## Security Considerations
 
 Rewarding agreement with the majority encourages conformity; not rewarding care encourages rubber-stamping.

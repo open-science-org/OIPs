@@ -17,6 +17,12 @@ An OSO Idea Proposal (OIP) is a design document for the Open Science Organizatio
 
 From 2017 to 2019, OSO proposals lived as GitHub issues (OIP-1 to OIP-7). Issues are good for discussion but poor as specifications: their text changes without review, they have no status, and there is no single document that implementers can follow. File-based OIPs, reviewed through pull requests, give every decision a stable text, a status, and a reviewable history.
 
+### Prior work
+
+- [The original OIPs list (2017–2019)](https://github.com/open-science-org/OIPs/blob/cc6c220003e7f37a7e876f660856786463176620/README.md) and the issue-based proposals it links ([OIP-1](./oip-1.md) to [OIP-7](./oip-7.md)): the first OSO proposal process, which this OIP replaces with files and pull requests.
+- [admin issue #2: a guideline for contributors and members (2017)](https://github.com/open-science-org/admin/issues/2): the early request for a contribution process.
+- [EIP-1: EIP Purpose and Guidelines](https://eips.ethereum.org/EIPS/eip-1): the process this OIP adapts.
+
 ## Specification
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174.
@@ -85,8 +91,9 @@ Final status means the text is settled. Whether a Final OIP is adopted into the 
 
 4. Images, diagrams and auxiliary files go in `assets/oip-N/` and are linked relatively, for example `../assets/oip-8/waterfall.svg`. SVG is preferred, then PNG.
 5. Other OIPs are linked relatively, for example `./oip-8.md`.
-6. Links to external resources SHOULD be limited to permanent references: OSO repositories at a specific commit, published standards (IETF RFCs, W3C recommendations, Ethereum EIPs), and archived papers. Anything else that matters SHOULD be saved as a PDF in the OIP's assets folder.
-7. Every OIP MUST end with: `Copyright and related rights waived via [CC0](../LICENSE.md).`
+6. The Motivation SHOULD end with a **Prior work** subsection listing the earlier OSO papers, repositories, issues and OIPs the proposal builds on, with links and one line each on what they contributed. OSO is a restart of earlier work, and readers should be able to trace each rule to where it came from.
+7. Links to external resources SHOULD be limited to permanent references: OSO repositories at a specific commit, published standards (IETF RFCs, W3C recommendations, Ethereum EIPs), and archived papers. Anything else that matters SHOULD be saved as a PDF in the OIP's assets folder.
+8. Every OIP MUST end with: `Copyright and related rights waived via [CC0](../LICENSE.md).`
 
 ### Workflow
 

@@ -19,6 +19,14 @@ This OIP defines who can act on the OSO ledger and who owns what. An identity is
 
 The 2017 URI proposal and the 2018 design assumed that a key could be tied to a real researcher. ORCID only proves control of an ORCID account, OpenAlex author matches can be wrong, and imported papers have authors who never agreed to OSO's terms. The ledger needs exact rules so that credit and money go to the right people and can be corrected.
 
+### Prior work
+
+- [Unique Researcher Identity (URI, 2017)](https://github.com/open-science-org/URI/blob/f4b7526c754eda8413ece85a71f63c0bac9e4adf/README.md): a blockchain-based researcher identity, possibly using third-party identity services and oracles to pull ORCID data.
+- [Technical design v0 (2018)](https://github.com/open-science-org/OSO/blob/898ee42ebeb9ea7248214fa7c508a318df144d5d/OSO_design_v0.pdf): mapping real-world researchers to OSO identities, and ideas jointly owned with percentage shares.
+- [OSO: An Idea Platform v0.3 (2018), §3.2 and §6.4](https://github.com/open-science-org/wiki/blob/52ba175b3bc57a8c08297c4e4a3db835ea2edbde/OSO_Idea_Platform_whitepaper.pdf): identity as a key pair, a username and a real-world identity, and the acknowledged difficulty of linking them.
+- [Proof of Idea v0.0 (2018), §2.1 and §5](https://github.com/open-science-org/wiki/blob/52ba175b3bc57a8c08297c4e4a3db835ea2edbde/Proof_of_Idea.pdf): a list of verified users, genesis users, and ways to register new ones.
+- [OIP-2: Funding application](./oip-2.md): using grant agencies' verified applicants as an early identity source.
+
 ## Specification
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174.

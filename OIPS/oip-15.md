@@ -19,6 +19,14 @@ OSO uses AI for pre-screening submissions, assessing how ideas depend on each ot
 
 [OIP-11](./oip-11.md) and [OIP-14](./oip-14.md) depend on AI outputs, [OIP-12](./oip-12.md) defines an AI-services module slot, and [OIP-13](./oip-13.md) requires AI outputs to be recorded. None of them says which models are used, how they are chosen and run, how unpublished work is protected when sent to a model, or who pays. AI compute is a real-money cost that exists from the first day, long before OSO tokens have outside value.
 
+### Prior work
+
+- [OSO white paper (2017), §3.5.1](https://github.com/open-science-org/wiki/blob/52ba175b3bc57a8c08297c4e4a3db835ea2edbde/OSO_white_paper.pdf): initial quality estimated by combining a review algorithm with human reviewers.
+- [Generalized Idea Protocol (GIP)](https://github.com/open-science-org/GIP/blob/78456634f6d9a0170887fa5b0d01eacd804b5fb6/README.md): similarity of ideas as a hybrid of an algorithmic score and community judgment.
+- [OIP-6: IdeaBoard](./oip-6.md): discussion around ideas, which v1 provides as AI-assisted chat on each idea page.
+
+Earlier OSO work predates current AI models; the AI-specific rules here are new.
+
 ## Specification
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174.

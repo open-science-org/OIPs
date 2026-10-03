@@ -26,6 +26,13 @@ The 2018 Generalized Idea Protocol (GIP) described a graph of ideas with weighte
 
 Time resolves part of the ambiguity: a later idea can depend on an earlier one, never the reverse. The 2026 technical review also required that value move only along approved, acyclic links, with exact accounting. This OIP brings those pieces together. It takes over the value-flow rules first drafted in [OIP-8](./oip-8.md), which now covers tokens only.
 
+### Prior work
+
+- [Generalized Idea Protocol (GIP, 2017–2018)](https://github.com/open-science-org/GIP/blob/78456634f6d9a0170887fa5b0d01eacd804b5fb6/README.md): ideas as a growing graph, idea flow and value flow, and GIP v0.0 with equal weights that authors and reviewers could redistribute.
+- [OSO: An Idea Platform v0.3 (2018), §4.2](https://github.com/open-science-org/wiki/blob/52ba175b3bc57a8c08297c4e4a3db835ea2edbde/OSO_Idea_Platform_whitepaper.pdf): weights defined as normalized mutual information, the absorption coefficient α, and value flow-back to parents.
+- [OSO white paper (2017), §3.6.2](https://github.com/open-science-org/wiki/blob/52ba175b3bc57a8c08297c4e4a3db835ea2edbde/OSO_white_paper.pdf): the cost of idea.
+- [Proof of Idea v0.0 (2018), §2.5](https://github.com/open-science-org/wiki/blob/52ba175b3bc57a8c08297c4e4a3db835ea2edbde/Proof_of_Idea.pdf): 15% of each mint to the cited publications.
+
 ## Specification
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174.
@@ -54,7 +61,7 @@ The knowledge graph MUST support these link types:
 | `cites` | A declared citation, recorded as extrinsic evidence | Only as part of an approved `depends-on` edge |
 | `similar` | Related content without an established dependency | No |
 | `contradicts` | The child disputes the parent | No |
-| `reviews` | The child is a review of the parent (OIP-11) | No |
+| `reviews` | The child is a review of the parent (OIP-17) | No |
 | `replicates` | The child replicates the parent's result | No, until a later OIP specifies otherwise |
 | `version-of` | The child is a later version of the parent | No |
 

@@ -23,6 +23,8 @@ The issue argued that storing full documents on Ethereum is impractical because 
 
 **Later developments.** The 2019 Idea-Hub proof of concept used in-browser IPFS, and a 2020 redesign proposed torrents instead. The v1 design stores content by hash and link and defers decentralized storage to a replaceable Storage module.
 
+**Related past work.** [OSO white paper (2017), §3.1 and §3.6.3](https://github.com/open-science-org/wiki/blob/52ba175b3bc57a8c08297c4e4a3db835ea2edbde/OSO_white_paper.pdf) (the Interplanetary Idea System and the cost of storage); idea-hub issues on IPFS pinning ([#13](https://github.com/open-science-org/idea-hub/issues/13)), browser pubsub ([#10](https://github.com/open-science-org/idea-hub/issues/10), [#12](https://github.com/open-science-org/idea-hub/issues/12)), OrbitDB ([#17](https://github.com/open-science-org/idea-hub/issues/17)) and torrents ([#24](https://github.com/open-science-org/idea-hub/issues/24)). Now covered by [OIP-13](./oip-13.md) and [OIP-16](./oip-16.md) section 5.
+
 ## Security Considerations
 
 The issue did not discuss security. Content on IPFS stays available only while some node pins it.
