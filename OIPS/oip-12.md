@@ -100,11 +100,11 @@ Each step runs as the core, consumes no nonce, emits events delivered as in sect
 
 | Slot | Reference module | Specified in |
 | --- | --- | --- |
-| identity | ORCID and attestations | OIP-10 |
+| identity | Common sign-in methods plus attestations (ORCID, institutional email, vouches) | OIP-10 |
 | validation, review, pre-screen | Random-N admission and expertise-matched review | OIP-11 |
 | reputation | Expertise × integrity | OIP-9 |
 | value-flow, minting | Fixed core behaviour in v1 | OIP-14, OIP-8 |
-| storage | Hashes and links only | — |
+| storage | Central content store addressed by hash (decentralized storage later) | OIP-16 section 5a |
 | governance | Founding team, with advisory votes from M3 (see OIP-0, Adoption) | — |
 
 In v1, value flow and minting are core behaviour with community-set parameters (α, challenge window, stakes), not replaceable modules.

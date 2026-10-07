@@ -43,7 +43,7 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 | Work | The idea over time. Identified by its work ID, which never changes. |
 | Version | An immutable record of the idea's content and claims at one point in time. Identified by its version ID. |
 | Registry record | The mutable state of a work, changed only by ledger transactions defined in other OIPs. |
-| Content | The files that carry the idea (paper, data, code), referred to by hash and location, not stored by OSO in v1. |
+| Content | The files that carry the idea (paper, data, code, review text), referred to by hash and location. In v1 they are either linked from elsewhere or kept in OSO's content store (section 5a). |
 | Registrant | The identity whose transaction registered a version: an owner for new submissions, the ingestion identity for imports (OIP-10 section 3). |
 
 ### 2. What is an idea
@@ -104,7 +104,17 @@ A version MUST be a JSON object with exactly these fields. Fields marked optiona
 2. `hash` MUST be the SHA-256 digest of the exact bytes of the file, written as `sha256:` followed by 64 lower-case hexadecimal characters. For code, the hash MAY instead identify a commit, written as `git:` followed by the full commit hash, with `uri` pointing to the repository.
 3. A new submission MUST include at least one `main` reference with a hash, so that the content the owners signed cannot be swapped later behind the same location.
 4. An imported work MAY have references with an empty `hash` when the content is not openly available; its `external_ids` then identify it.
-5. OSO does not store content in v1. A reference whose location stops working does not change the version; owners MAY register a new version with a new location and the same hash.
+5. A reference whose location stops working does not change the version; owners MAY register a new version with a new location and the same hash.
+
+### 5a. Content store
+
+1. The operator MUST run a content store that keeps files uploaded with submissions and text written inside OSO (reviews, replies, authors' notes), addressed by their SHA-256 hash.
+2. In v1 the content store is central: one store run by the operator, behind the storage module interface ([OIP-12](./oip-12.md)). The long-term plan is decentralized storage (section 5a.7).
+3. On upload, the store MUST compute the hash itself and reject the upload if it differs from the hash in the version. A stored file's `uri` MUST be `oso:sha256:<hex>`; interfaces resolve it through the store's public address.
+4. Content of admitted and published ideas MUST be publicly readable without sign-in. Content of a submission that has not been admitted MAY be readable only by its owners and the validators drawn for it.
+5. The store MUST enforce a maximum file size, a community parameter, and SHOULD keep at least one backup in a separate location.
+6. Bytes MAY be removed only for a legal reason or under OIP-11 (spam or plagiarism). Removal MUST be recorded on the ledger with the reason; the version, its hash and its ID remain, so the record of what was claimed survives.
+7. **Toward decentralized storage.** Because content is addressed by hash, it can be copied to decentralized storage (for example IPFS with pinning, or a permanent-storage network) without changing any version or ID. A later OIP will specify replication, who pays for it, and when the central store stops being the primary copy. A version's `uri` MAY then point to any location whose bytes hash to `hash`.
 
 ### 6. Version ID
 
@@ -195,8 +205,9 @@ OIP-10 says a license never changes retroactively. Attaching the license to the 
 
 1. Should preprints and their journal versions be one work with two versions, and who decides?
 2. Should `hypothesis` ideas be allowed to mint, given that they are cheap to write?
-3. Are the size limits (300 characters, 5,000 characters, 64 KiB) right?
+3. Are the size limits (300 characters, 5,000 characters, 64 KiB, and the content store's file limit) right?
 4. Should datasets and code be required to carry a content hash even when imported?
+5. Which decentralized storage to replicate to first, and who pays for it?
 
 ## Backwards Compatibility
 
@@ -231,6 +242,8 @@ Because it is a first version, its work ID is the same value. Every field is pre
 - [ ] Importing a DOI that already belongs to a work is rejected.
 - [ ] A new submission with no hashed `main` content reference is rejected.
 - [ ] A `review` without exactly one `reviews` target is rejected.
+- [ ] An upload whose computed hash differs from the version's `hash` is rejected by the content store.
+- [ ] Removing stored bytes leaves the version, its hash and its ID unchanged, and records the removal on the ledger.
 
 ## Reference Implementation
 
@@ -241,6 +254,8 @@ None yet.
 | Risk | Mitigation |
 | --- | --- |
 | Content swapped behind the same link after signing | Content hash in the signed version; mismatch is detectable by anyone |
+| Loss or censorship of the central content store | Backups in a separate location; content addressed by hash so any copy can be verified; planned replication to decentralized storage (section 5a.7) |
+| Unpublished submissions leaking | Content readable only by owners and drawn validators until admission (section 5a.4) |
 | Registering someone else's work as one's own | Signatures show who registered it; plagiarism checks at admission and challenges (OIP-11) |
 | Blocking a real author by registering their content first | Version IDs include registrant and owners, so the real author can still register; admission decides duplicates |
 | Duplicate imports splitting credit | External-identifier index rejects a second work for the same DOI, arXiv ID or OpenAlex ID |
