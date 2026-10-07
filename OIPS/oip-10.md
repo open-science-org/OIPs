@@ -13,7 +13,7 @@ requires: 8, 11
 
 ## Abstract
 
-This OIP defines who can act on the OSO ledger and who owns what. An identity is a key pair plus attestations, such as an ORCID sign-in, an institutional email, or peer vouches. Ideas record three separate things: attribution (who is credited), payout rights (IDEA units, [OIP-8](./oip-8.md)), and license (intellectual-property terms). New ideas need every owner's signature. Imported papers are registered without owners and give each listed author a claim slot that is settled through an adjudication process. AI agents can sign actions on behalf of an identity but cannot own ideas.
+This OIP defines who can act on the OSO ledger and who owns what. An identity is a key pair plus attestations, such as a linked ORCID account, an institutional email, or peer vouches. Users sign in with common accounts (Google, email and others) and add attestations later; what an identity may do depends on its attestations and earned reputation, not on how it signed in. Ideas record three separate things: attribution (who is credited), payout rights (IDEA units, [OIP-8](./oip-8.md)), and license (intellectual-property terms). New ideas need every owner's signature. Imported papers are registered without owners and give each listed author a claim slot that is settled through an adjudication process. AI agents can sign actions on behalf of an identity but cannot own ideas.
 
 ## Motivation
 
@@ -39,16 +39,31 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
    | Attestation | Issued by | Proves |
    | --- | --- | --- |
-   | `orcid` | The operator, after ORCID sign-in | Control of an ORCID account |
+   | `orcid` | The operator, after the user links an ORCID account | Control of an ORCID account |
    | `email-domain` | The operator, after email verification | Control of an address at an institution's domain. Only domains on the community's published list of institutional domains qualify; addresses at general mail providers do not produce this attestation |
    | `vouch` | Another identity | That identity's statement that the key belongs to the named person |
 
 4. Attestations MUST NOT be described as proof of real-world identity. Interfaces SHOULD show which attestations an identity has.
 5. The operator MUST rate-limit new identities. The limit is a community parameter.
+6. **Sign-in methods.** A user signs in with any method the operator supports, for example a Google account, a one-time link sent to an email address, a GitHub account or an ORCID account. Other providers, such as an Apple account, MAY be added later. Signing in proves control of that external account and lets the user act as their identity; on its own it is not an attestation and grants no trust.
+7. A user MAY link several sign-in methods to one identity. Linking a new method MUST require being signed in with a method already linked, so that a second account does not create a second identity by accident. Unlinking MUST leave at least one method.
+8. The ledger MUST NOT record a user's email address or sign-in account identifiers in plain form. Interfaces MUST NOT show them publicly unless the user chooses to.
+
+### 1a. What an identity may do
+
+| Action | Requires |
+| --- | --- |
+| Browse, search, chat within the free allowance | Nothing; no sign-in needed to browse |
+| Submit ideas, write open reviews, rate reviews | Any sign-in, within stricter rate limits for identities with no attestation |
+| Claim an imported work | An `orcid` attestation matching the slot for automatic approval; otherwise adjudication with evidence (section 6) |
+| Be drawn as a validator or invited reviewer | Earned weight in the domain (OIP-9), and any attestations the community's setup requires (for example `orcid` or `email-domain`) |
+| Receive real-money payouts (after M3) | Attestations and checks set by the later legal and custody rules |
+
+Communities MAY require more for an action, but MUST NOT require less than this table.
 
 ### 2. Key custody in v1
 
-1. After ORCID sign-in, the operator MUST create the user's key pair and, in v1, hold it on the user's behalf.
+1. On a user's first sign-in, with any supported method, the operator MUST create the user's key pair and, in v1, hold it on the user's behalf.
 2. The operator MUST publish its custody policy before v1 is used by people outside the founding team. The policy MUST state who can access keys, how keys are recovered, and how a user can export their key and take custody.
 3. Every action signed by the operator on a user's behalf MUST be recorded with a flag showing operator custody.
 
@@ -95,7 +110,8 @@ The block containing a version's registration gives an operator-recorded registr
 ## Rationale
 
 - **Attestations, not proof.** Following the 2026 technical review, ORCID and email checks prove control of accounts, not identity. Making each check a named attestation lets communities decide which they require.
-- **Operator custody in v1.** It lets researchers sign in with ORCID and never manage keys, which was a major barrier in 2018. Disclosure and an export path keep it honest until self-custody (M3).
+- **Easy sign-in, earned trust.** Requiring ORCID to sign in would exclude engineers, designers and funders, and adds friction for researchers. Any common account can sign in; trust comes from attestations and reputation, so creating many easy accounts gains little: they cannot validate, review by invitation or claim works.
+- **Operator custody in v1.** It lets people sign in with an account they already have and never manage keys, which was a major barrier in 2018. Disclosure and an export path keep it honest until self-custody (M3).
 - **Three fields.** Selling IDEA units must not make the buyer an author, and a license change must not move money.
 - **Claim slots.** Bibliographic data is often wrong; per-author slots and adjudication avoid paying the wrong person and keep unclaimed value visible.
 
@@ -104,6 +120,7 @@ The block containing a version's registration gives an operator-recorded registr
 1. Who should sit on the v1 adjudication panel, and how is it replaced later?
 2. Length of the notice period for automatic ORCID claims.
 3. Should organizations need a different attestation set?
+4. Which sign-in methods to support at launch, and whether to use a hosted sign-in service or run our own.
 
 ## Backwards Compatibility
 
@@ -111,7 +128,7 @@ Replaces the Unique Researcher Identity proof of concept (2017) and the identity
 
 ## Test Cases
 
-To be added. Required cases: a submission missing one owner's signature never enters validation; an ownership change moves IDEA units to match the new shares, and does not mint or create a version; a contested ORCID match goes to adjudication; value to an unresolved slot remains a liability until adjudication.
+To be added. Required cases: a submission missing one owner's signature never enters validation; an ownership change moves IDEA units to match the new shares, and does not mint or create a version; a contested ORCID match goes to adjudication; a second sign-in method links to the same identity only when added while signed in; an identity with no attestation cannot be drawn as a validator; value to an unresolved slot remains a liability until adjudication.
 
 ## Reference Implementation
 
@@ -122,7 +139,8 @@ None yet.
 | Risk | Mitigation |
 | --- | --- |
 | Impersonating an author of imported work | Notice period, adjudication for any mismatch or dispute, appeal |
-| Sybil identities | Rate limits; voting weight from reputation (OIP-9), which new identities lack |
+| Sybil identities from easy sign-in accounts | Rate limits, stricter for identities with no attestation; submission stakes; trusted roles need attestations and earned reputation (section 1a), which new identities lack |
+| Takeover of a linked sign-in account | Linking requires an existing method; users see and can remove linked methods; key export and custody policy (section 2) |
 | Operator misuse of custodied keys | Published custody policy, operator-custody flag on every signed action, key export |
 | Compromised AI-service key | Scoped, expiring, revocable delegations |
 | Attribution changed to redirect money | Attribution and payout rights are separate fields |
