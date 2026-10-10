@@ -64,6 +64,7 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 3. These are not ideas and MUST NOT be registered as idea objects: chat messages and AI conversations (OIP-15), votes and ratings, comments without new content, and ledger transactions themselves.
 4. A community MAY restrict which types it accepts (OIP-12). It MUST NOT redefine the types.
+5. A community MAY define **subtypes** in its setup, each mapped to one of the types above, for example `dataset/neuroimaging`, `code/model-weights`, `paper/book-chapter`, `other/legal-analysis` or `other/design`. A version records its subtype in `type` as `<type>/<subtype>`; every rule that applies to the base type applies to the subtype. New base types need a new OIP. This keeps the core general while letting any field describe its own kinds of contribution.
 
 ### 3. Work ID
 

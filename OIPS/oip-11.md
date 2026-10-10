@@ -82,11 +82,12 @@ Transitions caused by elapsed blocks (deadlines, window closings) run in block-e
 ### 4. Validation vote
 
 1. Each validator MUST vote admit or not-admit before a deadline of V blocks, giving a reason drawn from the stated criteria: provenance, required fields, duplication, spam, plagiarism, domain fit, or implausible parents and weights. A not-admit vote MAY be marked as spam.
-2. Validators check the owners' proposed parents and weights against the pre-screen suggestion (OIP-14 sections 6 and 7). Admission approves the proposed weight set.
-3. A validator who misses the deadline MUST be replaced by the next eligible validator in the sorted order, and receives the deadline penalty in OIP-9.
-4. Each validator has one vote; reputation decides who may serve (section 3.1), not how much a vote counts. More than half of N admit votes moves the idea to Admitted. Otherwise, if more than half of N votes are marked spam, it moves to RejectedSpam; else it moves to Returned.
-5. Votes and reasons MUST be public once the vote closes.
-6. Validators are paid under OIP-8 section 4a, whatever their vote.
+2. A community MAY add admission criteria in its setup, for example a data-availability statement or an ethics approval for human-subjects research. Added criteria MUST be checkable facts about the submission and MUST NOT judge its scientific merit, novelty or importance, which belong to review (OIP-17).
+3. Validators check the owners' proposed parents and weights against the pre-screen suggestion (OIP-14 sections 6 and 7). Admission approves the proposed weight set.
+4. A validator who misses the deadline MUST be replaced by the next eligible validator in the sorted order, and receives the deadline penalty in OIP-9.
+5. Each validator has one vote; reputation decides who may serve (section 3.1), not how much a vote counts. More than half of N admit votes moves the idea to Admitted. Otherwise, if more than half of N votes are marked spam, it moves to RejectedSpam; else it moves to Returned.
+6. Votes and reasons MUST be public once the vote closes.
+7. Validators are paid under OIP-8 section 4a, whatever their vote.
 
 ### 5. Challenges, appeals and retraction
 
