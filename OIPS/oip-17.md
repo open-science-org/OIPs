@@ -3,7 +3,7 @@ oip: 17
 title: Peer review
 description: Defines one simple, open peer-review process for v1, and the principles any later community-specific process must keep.
 author: Gajendra Jung Katuwal (@himalayajung)
-discussions-to: TBD (pull request URL once opened)
+discussions-to: https://github.com/open-science-org/OIPs/pull/10
 status: Draft
 type: Standards Track
 category: Module
@@ -13,7 +13,7 @@ requires: 9, 11, 16
 
 ## Abstract
 
-Validation ([OIP-11](./oip-11.md)) only admits an idea to the graph; peer review judges its quality. The OSO Idea Platform whitepaper lets each sub-network and channel run its own review process, provided every process is open, selects reviewers fairly and transparently, keeps reviewing after publication, and never hides rejected work. This OIP records those four principles as rules for any review process, and then specifies one simple process that every community uses in v1: three reviewers invited for each admitted idea and paid from the OSO fund, open reviews from anyone qualified at any time, one score and a recommendation per review, and a rating that keeps updating. Reviews are themselves ideas ([OIP-16](./oip-16.md)). Community-specific review processes come later.
+Review in OSO happens in four layers that serve different purposes: a spam filter that admits ideas to the graph (validation, [OIP-11](./oip-11.md)); **assigned expert review**, by reviewers drawn for each admitted idea and paid from the OSO fund; **expert reader review**, by qualified experts who read the idea on their own at any time; and **community review**, by any OSO member interested in the idea. The Idea Platform whitepaper lets each sub-network and channel run its own review process, provided every process is open, selects reviewers fairly and transparently, keeps reviewing after publication, and never hides rejected work. This OIP records those principles, defines the layers, and specifies one simple process that every community uses in v1: three assigned reviewers per admitted idea, expert reader reviews and community reviews at any time, a score and a recommendation per review, and two ratings that keep updating, one from experts and one from the community, shown separately. Reviews are themselves ideas ([OIP-16](./oip-16.md)). Community-specific review processes come later.
 
 ## Motivation
 
@@ -37,9 +37,11 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 | Term | Meaning |
 | --- | --- |
 | Review | An idea of type `review` targeting exactly one version of another idea (OIP-16 section 2) |
-| Invited review | A review written by an invited reviewer, and paid |
-| Open review | A review written by anyone eligible without an invitation; unpaid in v1 |
-| Rating | The current combined score of a version |
+| Assigned review | A review by a reviewer drawn and invited for the idea (layer 2); paid |
+| Expert reader review | A review by a qualified expert who chose to review the idea (layer 3); unpaid in v1 |
+| Community review | A review by any signed-in OSO member interested in the idea (layer 4); unpaid |
+| Expert rating | The current combined score of a version from assigned and expert reader reviews |
+| Community rating | The current combined score of a version from community reviews, shown separately |
 | Review rating | A score given to a review itself, used for the reviewer's expertise (OIP-9) |
 
 ### 2. Principles for every review process
@@ -51,42 +53,57 @@ Any review process in OSO, including later community-specific ones, MUST:
 3. **Be perpetual.** Reviews can be added at any time after publication, and ratings keep changing as they arrive.
 4. **Hide nothing.** There is no hard reject: negative reviews, low ratings and their history stay public alongside the idea.
 
+### 2a. Four layers of review
+
+| Layer | Who | Purpose | Paid | Counts toward |
+| --- | --- | --- | --- | --- |
+| 1. Spam filter (validation, OIP-11) | Validators drawn for the idea | Admission: the idea is not spam and meets stated, checkable criteria. Not a judgement of quality | Per-vote fee (OIP-8) | Admission only |
+| 2. Assigned expert review | k experts drawn for each admitted idea (section 5) | A careful, timely quality check of every admitted idea | Yes (section 6) | Expert rating; reviewer's expertise (OIP-9) |
+| 3. Expert reader review | Any expert in the domain who reads the idea, at any time (section 7) | Ongoing expert judgement as the field reads, uses and tries to reproduce the work | Not in v1 | Expert rating; reviewer's expertise |
+| 4. Community review | Any signed-in OSO member interested in the idea (section 7) | Feedback, questions and interest from the wider community, including readers outside the field | No | Community rating only |
+
+Layers 2 to 4 together make review perpetual: it starts at admission and never closes.
+
 ### 3. Scope in v1
 
-1. In v1, every community MUST use the process in sections 4 to 10. Communities MAY set its parameters (section 11) but MUST NOT replace it.
+1. In v1, every community MUST use the process in sections 2a and 4 to 10. Communities MAY set its parameters (section 11) but MUST NOT replace it.
 2. A later OIP will let sub-networks and channels define their own review processes as replaceable modules ([OIP-12](./oip-12.md)), for example invited panels, more reviewers or extra scoring dimensions. Any such process MUST keep the principles in section 2.
 
 ### 4. Eligibility and conflicts
 
-1. A user MAY review in domain D only if their weight in D (OIP-9 section 6) is at least the community's minimum reviewer weight.
-2. The conflict rules of OIP-11 section 3.2 apply. A user MUST NOT review an idea they own, or rate a review of an idea they own.
+1. A user MAY write an assigned or expert reader review in domain D only if their weight in D (OIP-9 section 6) is at least the community's minimum reviewer weight.
+2. Any signed-in user MAY write a community review (OIP-10 section 1a), within a per-identity limit per round.
+3. The conflict rules of OIP-11 section 3.2 apply to assigned and expert reader reviews. No user MAY review an idea they own, in any layer, or rate a review of an idea they own.
 
 ### 5. Reviewer selection
 
 The default selection method is a **weighted random draw with a load cap**. The alternatives considered, with their pros and cons, are in the Rationale.
 
-1. **Candidates.** When an idea becomes Admitted (OIP-11), the candidates are the users who meet section 4 in the idea's domain and have fewer than `max_open` accepted reviews still in progress.
+1. **Candidates.** When an idea becomes Admitted (OIP-11), the candidates are the users who meet section 4.1 and 4.3 in the idea's domain and have fewer than `max_open` accepted reviews still in progress.
 2. **Selection weight.** Each candidate's selection weight is their weight in the domain (OIP-9 section 6). OIP-9 already caps expertise, so no single expert dominates.
 3. **Draw.** Sort the candidates by address. For draw j = 1, 2, …, compute `r_j = hash(seed ‖ version ID ‖ j) mod W`, where seed is the hash of the block in which the idea was admitted and W is the total selection weight of the candidates still in the list. Walk the sorted list adding selection weights; the first candidate at which the running total exceeds `r_j` is drawn and removed from the list. Repeat until k candidates are drawn or the list is empty. A candidate's chance of being drawn is proportional to their weight, and anyone can recompute the result.
 4. **Replacement.** An invitation not accepted within the acceptance window, or accepted but not delivered by the review deadline, MUST be replaced by continuing the draw (the next j) over the remaining candidates. A reviewer who accepts and misses the deadline receives the deadline penalty in OIP-9.
 5. **Too few candidates.** If fewer than k candidates exist, the invitations already drawn proceed, and the remaining invitations MUST wait and be drawn as candidates become available. Eligibility and conflict rules MUST NOT be relaxed.
 6. **Disclosure.** The candidate list, weights and seed MUST be recorded with each draw. In v1 the operator can influence the seed (OIP-11 section 3.4); this MUST be disclosed and the draw MUST NOT be described as manipulation-resistant.
 
-### 6. Invited reviews
+### 6. Assigned expert reviews
 
-1. When an idea becomes Admitted, the core MUST invite k reviewers for its current version, selected under section 5.
-2. Each invited review delivered on time MUST be paid f_rev OSO from the OSO fund. The payment MUST NOT depend on the score, the recommendation or how the review is rated. If the fund cannot pay, invitations wait until it can.
+1. When an idea becomes Admitted, the core MUST invite k reviewers for its current version, selected under section 5. These are the layer-2 assigned reviews.
+2. Each assigned review delivered on time MUST be paid f_rev OSO from the OSO fund. The payment MUST NOT depend on the score, the recommendation or how the review is rated. If the fund cannot pay, invitations wait until it can.
 3. Authors never pay for review.
 4. Review payments are payments to people for tasks; they do not enter the payout waterfall (OIP-14 section 8).
 
-### 7. Open reviews
+### 7. Expert reader and community reviews
 
-Any eligible user MAY review any Admitted or Published version at any time, subject to section 4. Open reviews are unpaid in v1 and count toward the rating like invited reviews.
+1. **Expert reader reviews.** Any user meeting section 4.1 MAY review any Admitted or Published version at any time. Expert reader reviews are unpaid in v1 and count toward the expert rating and the reviewer's expertise exactly like assigned reviews.
+2. **Community reviews.** Any signed-in user MAY write a community review of any Admitted or Published version, within the per-identity limit. Community reviews count toward the community rating only. They do not count toward the expert rating or toward anyone's expertise (OIP-9).
+3. **Routing.** Reviews of every layer are registered without validation (OIP-11) and without a submission stake. Like any idea, a review MAY be challenged for spam or plagiarism under OIP-11 section 5; a review found to be spam or plagiarism is marked as such and stops counting toward any rating.
+4. Every review records its layer; interfaces MUST show the layer next to each review.
 
 ### 8. Review content
 
-1. A review MUST be registered as an OIP-16 idea of type `review` whose `targets` names the reviewed version. Its content MUST cover: what the work claims, whether the evidence supports the claims, whether the results could be reproduced from the methods, code and data provided, and what should change.
-2. Each review MUST carry, in the same transaction:
+1. A review MUST be registered as an OIP-16 idea of type `review` whose `targets` names the reviewed version. An assigned or expert reader review MUST cover: what the work claims, whether the evidence supports the claims, whether the results could be reproduced from the methods, code and data provided, and what should change.
+2. Each assigned or expert reader review MUST carry, in the same transaction:
    - a **score**, a whole number from 0 to 10, for the overall quality of the work, using these anchors:
 
      | Score | Meaning |
@@ -100,16 +117,18 @@ Any eligible user MAY review any Admitted or Published version at any time, subj
      Whole numbers between the anchors are allowed.
    - a **recommendation**: `endorse`, `revise` or `concerns`.
 3. AI assistance MUST be declared in the review's `ai_disclosure` (OIP-16 section 4). The signing reviewer is responsible for the whole review.
-4. A question that does not apply to an idea (for example reproducibility for a `hypothesis`) MAY be answered "not applicable" with a reason. A community MAY add review questions in its setup; it MUST NOT remove the required ones in v1.
-5. The owners MAY reply by registering a review of the review.
-6. A `revise` recommendation MAY lead the owners to submit a new version, under OIP-11 section 6. A new version starts with no reviews of its own; earlier reviews stay visible in its history.
+4. A community review MUST contain a comment of at least a few sentences, and MAY carry a score and a recommendation on the same scale.
+5. A question that does not apply to an idea (for example reproducibility for a `hypothesis`) MAY be answered "not applicable" with a reason. A community MAY add review questions in its setup; it MUST NOT remove the required ones in v1.
+6. The owners MAY reply by registering a review of the review.
+7. A `revise` recommendation MAY lead the owners to submit a new version, under OIP-11 section 6. A new version starts with no reviews of its own; earlier reviews stay visible in its history.
 
 ### 9. Ratings
 
-1. A version's rating MUST be the weighted median of its review scores, each weighted by the reviewer's weight in the domain (OIP-9 section 6) at the round the review was recorded. Sort scores ascending (ties by reviewer address) and take the first score at which the running total of weights reaches at least half of the total weight.
-2. The rating MUST be recomputed whenever a review is added, and its history MUST be kept.
-3. Replications of the version (OIP-16 type `replication`) MUST be shown next to the rating as counts of each outcome.
-4. In v1, ratings MUST NOT change any balance, mint, weight set or α.
+1. A version's **expert rating** MUST be the weighted median of the scores of its assigned and expert reader reviews, each weighted by the reviewer's weight in the domain (OIP-9 section 6) at the round the review was recorded. Sort scores ascending (ties by reviewer address) and take the first score at which the running total of weights reaches at least half of the total weight.
+2. A version's **community rating** MUST be the median of the scores of its community reviews, shown only once at least m_comm community scores exist, and always with their number. Community reviews are not weighted by reputation, so the community rating is shown separately and never mixed into the expert rating.
+3. Both ratings MUST be recomputed whenever a review is added or stops counting, and their history MUST be kept.
+4. Replications of the version (OIP-16 type `replication`) MUST be shown next to the ratings as counts of each outcome.
+5. In v1, ratings MUST NOT change any balance, mint, weight set or α.
 
 ### 10. Review ratings
 
@@ -120,16 +139,19 @@ Any eligible user MAY review any Admitted or Published version at any time, subj
 
 | Parameter | Meaning | v1 value | Set by |
 | --- | --- | --- | --- |
-| k | Invited reviewers per admitted idea | 3 (a community MAY lower it to 2 if its reviewer pool is too small; the setting is public) | Community |
-| f_rev | Payment per invited review, from the OSO fund | TBD OSO | Community |
+| k | Assigned reviewers per admitted idea | 3 (a community MAY lower it to 2 if its reviewer pool is too small; the setting is public) | Community |
+| f_rev | Payment per assigned review, from the OSO fund | TBD OSO | Community |
 | Minimum reviewer weight | Weight needed to review in a domain | TBD | Community |
 | Acceptance window | Blocks to accept an invitation | TBD | Community |
 | Review deadline | Blocks to deliver after accepting | TBD | Community |
 | max_open | Accepted reviews a reviewer may have in progress before being skipped | 3 | Community |
-| Selection method | How invited reviewers are drawn | Weighted random draw (section 5) | Protocol in v1 |
+| Community review limit | Community reviews per identity per round | TBD | Community |
+| m_comm | Community scores needed before the community rating is shown | 5 | Community |
+| Selection method | How assigned reviewers are drawn | Weighted random draw (section 5) | Protocol in v1 |
 
 ## Rationale
 
+- **Four layers, four purposes.** A spam filter keeps the graph clean; assigned review guarantees every admitted idea a careful look; expert readers keep judging the work as it is used and reproduced; and the community adds feedback and interest from people who are not experts in the field. Keeping the expert and community ratings apart lets both count without letting a crowd outvote experts, or experts silence the crowd.
 - **Principles now, customization later.** The Idea Platform whitepaper lets each sub-network and channel run its own review, within four shared characteristics. Writing those characteristics down now keeps later community processes compatible, while one process for v1 keeps the first build and the pilot simple.
 - **Review after admission.** Proof of Idea separated a cheap spam filter (layer 1) from expert review (layer 2) and perpetual public review (layer 3). Ideas enter the graph quickly; review continues.
 - **Paid reviews from the fund.** The 2017 white paper's "paid and quality peer review" should not depend on authors paying, which would bring back pay-to-publish.
@@ -163,7 +185,7 @@ The weighted draw is the default because it keeps the two properties the whitepa
 
 ## Backwards Compatibility
 
-Takes over peer review from OIP-11, which keeps only the rules for new versions. Implements the review layers of Proof of Idea (layers 2 and 3), §3.5 of the 2017 white paper and §5 of the Idea Platform whitepaper, with one network-wide process in place of per-community processes for now. Unlike the 2017 white paper, acceptance is not decided by a majority of reviewers.
+Takes over peer review from OIP-11, which keeps only the rules for new versions. Implements the review layers of Proof of Idea: its spam filter (layer 1, in OIP-11), peer review (layers 2 and 3 here) and public review (layer 4 here). It also follows §3.5 of the 2017 white paper and §5 of the Idea Platform whitepaper, with one network-wide process in place of per-community processes for now. Unlike the 2017 white paper, acceptance is not decided by a majority of reviewers.
 
 ## Test Cases
 
@@ -176,8 +198,11 @@ Scores and weights on one version: A 8 (weight 3), B 2 (weight 1), C 6 (weight 2
 - [ ] An admitted idea gets k invitations drawn by section 5, excluding conflicts and reviewers at max_open.
 - [ ] The same seed, candidates and weights always give the same draw.
 - [ ] Over many draws, a candidate with twice the weight is drawn about twice as often.
-- [ ] An invited review delivered on time is paid f_rev whatever its score.
-- [ ] An open review counts toward the rating and is not paid.
+- [ ] An assigned review delivered on time is paid f_rev whatever its score.
+- [ ] An expert reader review counts toward the expert rating and is not paid.
+- [ ] A community review counts only toward the community rating, which is hidden until m_comm scores exist.
+- [ ] A user without expert weight can write a community review but not an assigned or expert reader review.
+- [ ] A review registers without validation or stake, and a review found to be spam stops counting.
 - [ ] An owner cannot review their own idea or rate reviews of it.
 - [ ] Adding a review changes the rating, and the old rating stays in its history.
 - [ ] Ratings change no balance, weight set or α.
@@ -195,6 +220,7 @@ None yet.
 | Overloading the most expert reviewers | Load cap (max_open); capped expertise in OIP-9 |
 | Retaliatory or biased reviews | Signed, public reviews; owners may reply; weighted median limits one reviewer's effect |
 | Coordinated scores | Weighted median; weights from reputation that cannot be bought; minimum reviewer weight |
+| A crowd brigading an idea through community reviews | Community rating kept separate from the expert rating, shown with its count, never affecting value or expertise; per-identity limits; spam challenges |
 | Authors punishing critical reviewers | Pay independent of the verdict; owners' ratings of reviews excluded from quality(r) |
 | Draining the OSO fund | k paid reviews per admitted idea only; admission requires a stake and validation |
 

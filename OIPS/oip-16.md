@@ -3,7 +3,7 @@ oip: 16
 title: Idea object
 description: Defines what an idea is, its stable work ID, its immutable versions, and the registry state kept separately from content.
 author: Gajendra Jung Katuwal (@himalayajung)
-discussions-to: TBD (pull request URL once opened)
+discussions-to: https://github.com/open-science-org/OIPs/pull/10
 status: Draft
 type: Standards Track
 category: Core
@@ -111,11 +111,11 @@ A version MUST be a JSON object with exactly these fields. Fields marked optiona
 
 1. The operator MUST run a content store that keeps files uploaded with submissions and text written inside OSO (reviews, replies, authors' notes), addressed by their SHA-256 hash.
 2. In v1 the content store is central: one store run by the operator, behind the storage module interface ([OIP-12](./oip-12.md)). The long-term plan is decentralized storage (section 5a.7).
-3. On upload, the store MUST compute the hash itself and reject the upload if it differs from the hash in the version. A stored file's `uri` MUST be `oso:sha256:<hex>`; interfaces resolve it through the store's public address.
+3. On upload, the store MUST compute the hash itself and reject the upload if it differs from the hash in the version. A stored file's `uri` MUST be `oso:sha256:<hex>`. This is a location-independent name, not an address: any store or copy that holds bytes with that hash answers to it, and interfaces resolve it through whichever copy they trust, checking the hash.
 4. Content of admitted and published ideas MUST be publicly readable without sign-in. Content of a submission that has not been admitted MAY be readable only by its owners and the validators drawn for it.
 5. The store MUST enforce a maximum file size, a community parameter, and SHOULD keep at least one backup in a separate location.
 6. Bytes MAY be removed only for a legal reason or under OIP-11 (spam or plagiarism). Removal MUST be recorded on the ledger with the reason; the version, its hash and its ID remain, so the record of what was claimed survives.
-7. **Toward decentralized storage.** Because content is addressed by hash, it can be copied to decentralized storage (for example IPFS with pinning, or a permanent-storage network) without changing any version or ID. A later OIP will specify replication, who pays for it, and when the central store stops being the primary copy. A version's `uri` MAY then point to any location whose bytes hash to `hash`.
+7. **Toward decentralized storage.** Because content is named by hash, it can be copied to decentralized storage (for example IPFS with pinning, or a permanent-storage network) without changing any version or ID: an `oso:sha256:` name stays the same and simply gains more places it can be fetched from. A later OIP will specify replication, who pays for it, and when the central store stops being the primary copy.
 
 ### 6. Version ID
 

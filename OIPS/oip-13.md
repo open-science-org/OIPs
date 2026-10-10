@@ -3,7 +3,7 @@ oip: 13
 title: Public ledger and migration path
 description: Defines the v1 transaction and block format, publication of the ledger on GitHub, replay, and conditions for moving on-chain.
 author: Gajendra Jung Katuwal (@himalayajung)
-discussions-to: TBD (pull request URL once opened)
+discussions-to: https://github.com/open-science-org/OIPs/pull/10
 status: Draft
 type: Standards Track
 category: Core
@@ -90,6 +90,7 @@ Implementations and interfaces MUST disclose that in v1:
 - the operator's choice of transactions influences block hashes used as selection seeds (OIP-11);
 - the operator sets block day labels, which fix the origin dates of new submissions (OIP-14);
 - the operator holds keys for users in operator custody (OIP-10);
+- the operator runs the central content store, so it can read submissions before they are admitted and could remove stored files; removals are recorded on the ledger (OIP-16 section 5a);
 - GitHub administrators can rewrite repository history; detection depends on mirrors and checkpoints.
 
 ### 8. Migration to smart contracts

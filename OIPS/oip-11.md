@@ -3,7 +3,7 @@ oip: 11
 title: Submission routing
 description: Defines the states a new idea passes through, from submission and pre-screening to validation, challenge and peer review.
 author: Gajendra Jung Katuwal (@himalayajung)
-discussions-to: TBD (pull request URL once opened)
+discussions-to: https://github.com/open-science-org/OIPs/pull/10
 status: Draft
 type: Standards Track
 category: Module
@@ -13,7 +13,7 @@ requires: 8, 9, 10, 12, 14, 16
 
 ## Abstract
 
-Every new idea goes through validation before peer review. Validation is an **admission check** against stated criteria (provenance, required fields, duplication, spam, plagiarism, domain fit, and plausible parents and weights), not a scientific verdict. An AI pre-screen reports first; then N validators drawn from a published roster vote, and a majority admits the idea. Admission mints the idea's tokens into escrow ([OIP-8](./oip-8.md)). A challenge window follows, during which anyone can contest the admission with evidence. Owners can appeal a rejection or a removal once. Peer review then runs separately under [OIP-17](./oip-17.md). This OIP is the reference implementation of the Validation module.
+Every new idea, except reviews ([OIP-17](./oip-17.md) section 7), goes through validation before peer review. Validation is an **admission check** against stated criteria (provenance, required fields, duplication, spam, plagiarism, domain fit, and plausible parents and weights), not a scientific verdict. An AI pre-screen reports first; then N validators drawn from a published roster vote, and a majority admits the idea. Admission mints the idea's tokens into escrow ([OIP-8](./oip-8.md)). A challenge window follows, during which anyone can contest the admission with evidence. Owners can appeal a rejection or a removal once. Peer review then runs separately under [OIP-17](./oip-17.md). This OIP is the reference implementation of the Validation module.
 
 ## Motivation
 

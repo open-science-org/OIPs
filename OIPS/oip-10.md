@@ -3,7 +3,7 @@ oip: 10
 title: Ownership and identity
 description: Defines identities, key custody, ownership of ideas, imported-author claims and AI-produced work.
 author: Gajendra Jung Katuwal (@himalayajung)
-discussions-to: TBD (pull request URL once opened)
+discussions-to: https://github.com/open-science-org/OIPs/pull/10
 status: Draft
 type: Standards Track
 category: Core
@@ -47,16 +47,16 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 5. The operator MUST rate-limit new identities. The limit is a community parameter.
 6. **Sign-in methods.** A user signs in with any method the operator supports, for example a Google account, a one-time link sent to an email address, a GitHub account or an ORCID account. Other providers, such as an Apple account, MAY be added later. Signing in proves control of that external account and lets the user act as their identity; on its own it is not an attestation and grants no trust.
 7. A user MAY link several sign-in methods to one identity. Linking a new method MUST require being signed in with a method already linked, so that a second account does not create a second identity by accident. Unlinking MUST leave at least one method.
-8. The ledger MUST NOT record a user's email address or sign-in account identifiers in plain form. Interfaces MUST NOT show them publicly unless the user chooses to.
+8. The ledger MUST NOT record a user's email address or sign-in account identifiers in plain form. Interfaces MUST NOT show them publicly unless the user chooses to. An exception is an identifier the user links as an attestation in order to be matched publicly, such as an ORCID iD, which is public by nature: linking it records it on the ledger, and the interface MUST say so before the user confirms.
 
 ### 1a. What an identity may do
 
 | Action | Requires |
 | --- | --- |
 | Browse, search, chat within the free allowance | Nothing; no sign-in needed to browse |
-| Submit ideas, write open reviews, rate reviews | Any sign-in, within stricter rate limits for identities with no attestation |
+| Submit ideas, write community reviews (OIP-17) | Any sign-in, within stricter rate limits for identities with no attestation |
 | Claim an imported work | An `orcid` attestation matching the slot for automatic approval; otherwise adjudication with evidence (section 6) |
-| Be drawn as a validator or invited reviewer | Earned weight in the domain (OIP-9), and any attestations the community's setup requires (for example `orcid` or `email-domain`) |
+| Be drawn as a validator or assigned reviewer; write expert reader reviews; rate reviews | Earned weight in the domain (OIP-9), and any attestations the community's setup requires (for example `orcid` or `email-domain`) |
 | Receive real-money payouts (after M3) | Attestations and checks set by the later legal and custody rules |
 
 Communities MAY require more for an action, but MUST NOT require less than this table.
