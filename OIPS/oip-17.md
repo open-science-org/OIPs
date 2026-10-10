@@ -100,8 +100,9 @@ Any eligible user MAY review any Admitted or Published version at any time, subj
      Whole numbers between the anchors are allowed.
    - a **recommendation**: `endorse`, `revise` or `concerns`.
 3. AI assistance MUST be declared in the review's `ai_disclosure` (OIP-16 section 4). The signing reviewer is responsible for the whole review.
-4. The owners MAY reply by registering a review of the review.
-5. A `revise` recommendation MAY lead the owners to submit a new version, under OIP-11 section 6. A new version starts with no reviews of its own; earlier reviews stay visible in its history.
+4. A question that does not apply to an idea (for example reproducibility for a `hypothesis`) MAY be answered "not applicable" with a reason. A community MAY add review questions in its setup; it MUST NOT remove the required ones in v1.
+5. The owners MAY reply by registering a review of the review.
+6. A `revise` recommendation MAY lead the owners to submit a new version, under OIP-11 section 6. A new version starts with no reviews of its own; earlier reviews stay visible in its history.
 
 ### 9. Ratings
 

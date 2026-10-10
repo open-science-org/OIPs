@@ -79,7 +79,7 @@ The knowledge graph MUST support these link types:
 ### 4. Intrinsic assessments
 
 1. An intrinsic assessment MUST be recorded as an AI input transaction (OIP-13 section 6) containing: the child version, the candidate parent version, a dependence score in bps, a rubric category, references to the passages used as evidence, and the model and configuration identifiers.
-2. The rubric categories are: `essential-method`, `data-dependency`, `direct-extension`, `background`, `critique`, `none`.
+2. The rubric categories are: `essential-method`, `data-dependency`, `direct-extension`, `background`, `critique`, `none`. A community MAY add categories suited to its field in its setup (for example `uses-code` or `legal-precedent`); added categories MUST map to one of these for any rule that depends on the category.
 3. An assessment MUST NOT change any balance or weight by itself.
 4. A newer assessment of the same pair MAY be recorded, for example by a newer model. It does not replace the old record, and it does not change an approved weight set unless that set is re-approved (section 7).
 5. Assessments that can lead to payout edges are Class A tasks under [OIP-15](./oip-15.md) and require two independent models.

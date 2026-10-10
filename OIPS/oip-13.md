@@ -65,7 +65,7 @@ The state hash MUST be a Merkle root over all state entries, sorted by key, usin
 
 ### 4. Publication
 
-1. Every block MUST be committed to a public GitHub repository, one file per block, with a signed commit, within one round (OIP-14) of being produced.
+1. Every block MUST be committed to a public git repository (GitHub in v1; the host is replaceable), one file per block, with a signed commit, within one round (OIP-14) of being produced.
 2. A state snapshot MUST be committed at least once per round.
 3. The latest block hash SHOULD be published at least once per round to independent places outside GitHub (for example, mirrors run by community members), so that a rewritten history can be detected.
 4. The operator MUST NOT rewrite published history. A correction MUST be a new transaction.

@@ -97,7 +97,7 @@ The block containing a version's registration gives an operator-recorded registr
 1. A work imported from an outside source (OpenAlex, arXiv or similar) MUST be registered with its source identifiers and author list as attribution only. It MUST carry no owners, no signatures and no financial terms.
 2. Each listed author MUST get a separate **claim slot**, recording the source's author identifier (ORCID, OpenAlex ID) where one exists.
 3. The idea's IDEA units MUST be held by its unresolved-claims account (OIP-8 section 9) until adjudication.
-4. A **claim** is a transaction by an identity asserting that it is the author of a slot. A claim whose ORCID attestation matches the slot's ORCID MAY be approved automatically after a public notice period. All other claims, and any disputed claim, MUST go to adjudication.
+4. A **claim** is a transaction by an identity asserting that it is the author of a slot. A claim whose attestation matches the slot's source identifier MAY be approved automatically after a public notice period: for example an `orcid` attestation for a paper's author, or an attestation of a GitHub or Hugging Face account for code or a model, where the community setup lists that attestation type as accepted for claims. All other claims, and any disputed claim, MUST go to adjudication.
 5. **Adjudication** decides who holds each slot and how the idea's IDEA units are split among the slots. In v1, adjudication is done by a disclosed panel named by the founding team. Its decisions MUST be recorded with reasons and MUST be open to appeal.
 6. Shares MUST NOT be assumed equal unless the adjudication records equal shares as its decision.
 7. Value accrued to an unresolved idea or slot MUST remain an identifiable liability on the ledger.

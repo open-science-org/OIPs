@@ -50,7 +50,7 @@ Every module MUST publish a manifest on the ledger before it can be used:
 | --- | --- |
 | `id` | Unique name, for example `oso.validation.random-n` |
 | `version` | Semantic version |
-| `kind` | The slot it fills: identity, edge-weights, pre-screen, validation, review, value-flow, minting, reputation, governance, storage, ai-service, or other |
+| `kind` | The slot it fills: identity, ingestion, edge-weights, pre-screen, validation, review, value-flow, minting, reputation, governance, storage, ai-service, literature, notification, or other |
 | `code_hash` | Hash of the exact implementation |
 | `handles` | Transaction types the module processes |
 | `state` | The state namespace it owns |
@@ -101,13 +101,25 @@ Each step runs as the core, consumes no nonce, emits events delivered as in sect
 | Slot | Reference module | Specified in |
 | --- | --- | --- |
 | identity | Common sign-in methods plus attestations (ORCID, institutional email, vouches) | OIP-10 |
-| validation, review, pre-screen | Random-N admission and expertise-matched review | OIP-11 |
+| ingestion | Import from open metadata sources (OpenAlex, arXiv); sources chosen per community | OIP-16 section 9 |
+| pre-screen, validation | Two-model AI report and random-N admission | OIP-11 |
+| review | Weighted-draw invited review with open reviews | OIP-17 |
+| edge-weights | AI and citation evidence, human approval | OIP-14 |
+| ai-service | Provider-independent adapter (hosted or local models) | OIP-15 |
 | reputation | Expertise × integrity | OIP-9 |
 | value-flow, minting | Fixed core behaviour in v1 | OIP-14, OIP-8 |
 | storage | Central content store addressed by hash (decentralized storage later) | OIP-16 section 5a |
+| notification | Email and in-app alerts | — |
+| literature | None in v1; an open literature index is a long-term objective | — |
 | governance | Founding team, with advisory votes from M3 (see OIP-0, Adoption) | — |
 
 In v1, value flow and minting are core behaviour with community-set parameters (α, challenge window, stakes), not replaceable modules.
+
+### 7. General purpose
+
+1. The core and the reference modules MUST NOT assume a particular field, kind of contribution, language, vendor or hosting provider. Anything specific to a field (idea subtypes, admission criteria, review questions, import sources, rubric categories, required attestations) MUST live in a community setup or a module, not in the core.
+2. Every external service a reference module uses (sign-in providers, AI providers, storage, mail, hosting) MUST be reached through the module's interface and chosen by configuration, so it can be replaced without changing other modules.
+3. User-facing text MUST be kept apart from code so that communities can translate and adapt it.
 
 ## Rationale
 
