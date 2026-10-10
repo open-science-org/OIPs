@@ -3,7 +3,7 @@ oip: 14
 title: Idea attribution and value flow
 description: Defines how ideas are linked by intrinsic and extrinsic evidence over time, how links are approved, and how value flows along them.
 author: Gajendra Jung Katuwal (@himalayajung)
-discussions-to: TBD (pull request URL once opened)
+discussions-to: https://github.com/open-science-org/OIPs/pull/10
 status: Draft
 type: Standards Track
 category: Core

@@ -3,7 +3,7 @@ oip: 15
 title: AI services, models and costs
 description: Defines how OSO chooses and runs AI models, including locally hosted ones, how outputs are recorded, and who pays for AI compute.
 author: Gajendra Jung Katuwal (@himalayajung)
-discussions-to: TBD (pull request URL once opened)
+discussions-to: https://github.com/open-science-org/OIPs/pull/10
 status: Draft
 type: Standards Track
 category: Module

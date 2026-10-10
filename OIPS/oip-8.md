@@ -3,7 +3,7 @@ oip: 8
 title: Token structure
 description: Defines OSO supply and minting, the mint split and escrow, stakes, and per-idea IDEA tokens.
 author: Gajendra Jung Katuwal (@himalayajung)
-discussions-to: TBD (pull request URL once opened)
+discussions-to: https://github.com/open-science-org/OIPs/pull/10
 status: Draft
 type: Standards Track
 category: Core
@@ -133,8 +133,17 @@ The payout waterfall, payout-graph rules and dust rules of earlier drafts are no
 ### 10. Bootstrap allocation
 
 1. The genesis block MUST create a bootstrap pool of B OSO and record its amount publicly. B counts toward T.
-2. The pool MUST be used only for first participants' submission stakes, first validators' starting balances and an initial balance of the OSO fund for validator fees, through public, logged transfers. Starting expertise for the first validators (OIP-9 section 7) is recorded publicly in the genesis block alongside the pool.
+2. The pool MUST be used only for first participants' submission stakes, first validators' starting balances and an initial balance of the OSO fund for validator fees, through public, logged transfers. Starting expertise for the first validators and reviewers (OIP-9 section 7) is recorded publicly in the genesis block alongside the pool.
 3. There MUST be no other pre-mine.
+
+### 10a. Starter grant
+
+Without it, everyone after the bootstrap participants would need OSO to submit and could only get OSO by submitting.
+
+1. When an identity receives its first attestation (OIP-10 section 1), the OSO fund MUST transfer it a one-time starter grant of g_start OSO, enough for a few submission stakes.
+2. An identity MUST receive at most one starter grant, whatever attestations it adds later. Attestation types that can trigger a grant are listed in the community setup.
+3. If the OSO fund cannot pay, the grant waits until it can. Grants and their recipients are public on the ledger.
+4. In v1 all OSO is simulated, so the grant has no outside value.
 
 ### 11. Reputation
 
@@ -151,6 +160,7 @@ Reputation MUST NOT be transferable, delegable or purchasable, and MUST NOT be d
 | Challenge window | W | TBD blocks | Community |
 | IDEA units per idea | — | 1,000,000 | Protocol |
 | Submission stake | s_sub | TBD OSO | Community |
+| Starter grant | g_start | TBD OSO (a few stakes) | Community |
 | Validator fee | f_val | TBD OSO per vote | Community |
 | Bootstrap pool | B | TBD, disclosed at genesis | Founding team, once |
 
@@ -185,7 +195,7 @@ Option A is specified because exact, verifiable accounting is the v1 goal.
 
 1. Should R stay fixed, or change over time? Should the mint depend on anything besides remaining supply?
 2. Should revisions, reviews and replications mint, and how much?
-3. Values for W, s_sub, f_val and B.
+3. Values for W, s_sub, f_val, g_start and B.
 4. Should the 50/30/15/5 split become a community parameter?
 5. May owners ever issue more IDEA units, for example to raise funding?
 
@@ -239,6 +249,7 @@ None yet. The v1 ledger will provide one.
 
 | Risk | Mitigation |
 | --- | --- |
+| Farming starter grants with many identities | One grant per identity, only after an attestation; identity rate limits (OIP-10); the grant covers only a few stakes, which are slashed for spam |
 | Spam submitted to farm mints | Submission stake, full escrow of the mint, burn on successful challenge; AI pre-screening and per-identity limits |
 | Low-quality but admissible work submitted to farm mints | Not prevented by admission, which is not a quality check; per-identity limits cap it, and mints do not raise voting weight except through the cited share received by parents (OIP-9). MUST be re-examined before tokens carry outside value |
 | Validators favouring admission to get paid | Per-vote fee paid whatever the outcome (section 4a) |

@@ -3,7 +3,7 @@ oip: 9
 title: Reputation and expertise
 description: Defines per-domain expertise and integrity scores, and how they combine into voting weight.
 author: Gajendra Jung Katuwal (@himalayajung)
-discussions-to: TBD (pull request URL once opened)
+discussions-to: https://github.com/open-science-org/OIPs/pull/10
 status: Draft
 type: Standards Track
 category: Module
@@ -63,7 +63,7 @@ For user u and domain D:
 ```
 E_ideas(u, D)   = Σ over ideas i owned by u:
                   share(u,i) × sim(i,D) × isqrt(use(i)) × decay(i, h_idea)    / 10^8
-E_reviews(u, D) = Σ over reviews r written by u:
+E_reviews(u, D) = Σ over assigned and expert reader reviews r written by u (OIP-17; community reviews do not count):
                   sim(r,D) × quality(r) × decay(r, h_review)                  / 10^8
 E_endorse(u, D) = Σ over endorsements of u in D by v:
                   rating × min(E_prev(v, D), cap) × decay(endorsement, h_review) × k_endorse / 10^12
@@ -102,7 +102,7 @@ weight(u, D) = min( E(u, D), cap ) × I(u) / 10,000
 
 ### 7. Bootstrap
 
-Before any user has earned expertise, the founding team MAY assign starting expertise to the first validators, recorded publicly in the genesis block alongside the bootstrap allocation (OIP-8 section 10). Bootstrap expertise MUST decay with h_review and MUST NOT exceed `cap / 2`.
+Before any user has earned expertise, the founding team MAY assign starting expertise to the first validators and to a first pool of reviewers, so that admission and assigned review can work from the start. Assignments MUST be recorded publicly in the genesis block alongside the bootstrap allocation (OIP-8 section 10), with each person's field and the reason for the choice. Bootstrap expertise MUST decay with h_review and MUST NOT exceed `cap / 2`. As new ideas cite claimed imported works, their authors earn expertise in the normal way (section 4), and the bootstrap fades.
 
 ### 8. Parameters
 

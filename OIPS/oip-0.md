@@ -3,7 +3,7 @@ oip: 0
 title: OIP purpose and guidelines
 description: How OSO Idea Proposals are written, numbered, reviewed and finalized.
 author: Gajendra Jung Katuwal (@himalayajung)
-discussions-to: TBD (pull request URL once opened)
+discussions-to: https://github.com/open-science-org/OIPs/pull/10
 status: Living
 type: Meta
 created: 2026-10-02

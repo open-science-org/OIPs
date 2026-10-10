@@ -3,7 +3,7 @@ oip: 12
 title: Module interface and community setups
 description: Defines how replaceable modules plug into the OSO core and how communities choose modules and parameters.
 author: Gajendra Jung Katuwal (@himalayajung)
-discussions-to: TBD (pull request URL once opened)
+discussions-to: https://github.com/open-science-org/OIPs/pull/10
 status: Draft
 type: Standards Track
 category: Core
@@ -80,11 +80,12 @@ Within a block, the core MUST process transactions in block order. For each tran
 
 Some rules fire when a number of blocks has passed, with no transaction to trigger them. After the last transaction of every block, the core MUST run these steps in this order, each over its items in ascending idea work ID (then ascending validator address where relevant):
 
-1. Deadline expiries: validators whose vote deadline (OIP-11) ended at this block are replaced.
-2. Decision closings: votes, challenges and appeals whose collection is complete or whose deadline ended are decided (OIP-11).
-3. Window closings: ideas whose challenge window or appeal window ended at this block move on (OIP-11), and escrow and stakes are released, burned or slashed (OIP-8).
-4. Settlement: queued value-flow transfers are processed, and at a round's last block all owed amounts are queued first (OIP-14 sections 9 and 10).
-5. Score recomputation: at a round's last block, reputation scores are recomputed (OIP-9).
+1. Deadline expiries: validators whose vote deadline (OIP-11) ended at this block are replaced, and reviewer invitations whose acceptance window or review deadline (OIP-17) ended are passed to the next candidate.
+2. Waiting checks: ideas in Waiting (OIP-11) and reviewer invitations or grants waiting for funds (OIP-8, OIP-17) are retried in queue order, now that validators, AI budget or funds may be available.
+3. Decision closings: votes, challenges and appeals whose collection is complete or whose deadline ended are decided (OIP-11).
+4. Window closings: ideas whose challenge window or appeal window ended at this block move on (OIP-11), and escrow and stakes are released, burned or slashed (OIP-8).
+5. Settlement: queued value-flow transfers are processed, and at a round's last block all owed amounts are queued first (OIP-14 sections 9 and 10).
+6. Score recomputation: at a round's last block, reputation scores are recomputed (OIP-9).
 
 Each step runs as the core, consumes no nonce, emits events delivered as in section 4, and is recorded in the block so that replay reproduces it.
 
