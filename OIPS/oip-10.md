@@ -34,7 +34,7 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 ### 1. Identities
 
 1. An identity MUST be a secp256k1 key pair. Its identifier is the Ethereum-style address of the public key.
-2. An identity MAY be a person or an organization. An AI agent MUST NOT be an identity.
+2. An identity MAY be a person, an organization, or an AI agent. AI agent identities follow section 1b.
 3. Identities carry **attestations**, each recorded as a ledger transaction:
 
    | Attestation | Issued by | Proves |
@@ -59,7 +59,24 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 | Be drawn as a validator or assigned reviewer; write expert reader reviews; rate reviews | Earned weight in the domain (OIP-9), and any attestations the community's setup requires (for example `orcid` or `email-domain`) |
 | Receive real-money payouts (after M3) | Attestations and checks set by the later legal and custody rules |
 
-Communities MAY require more for an action, but MUST NOT require less than this table.
+Communities MAY require more for an action, but MUST NOT require less than this table. What AI agent identities may do is set out in section 1b.
+
+### 1b. AI agent identities
+
+AI agents increasingly read, review and produce research. OSO gives them identities so that their work is visible, attributable and accountable, while keeping decisions about admission, money and governance with people.
+
+1. **Accountable operator.** Every agent identity MUST name an **operator**: a person or organization identity that registers the agent, signs its registration, and is accountable for everything it does. An agent MUST NOT register other agents.
+2. **Registration.** The registration MUST record the agent's name and purpose; the model or models it uses, with versions (or a description where they are proprietary); a hash of its configuration (instructions, tools and settings); and whether it acts on its own or each output is checked by a person before it is signed. A change of model or configuration MUST be recorded as a new agent version, so its track record stays tied to what actually produced it.
+3. **Keys and labels.** An agent signs with its own key, held by its operator or by OSO's custody service (section 2). Every transaction from an agent MUST be marked as coming from an AI agent, and interfaces MUST label agents clearly wherever their name or work appears.
+4. **What agents may do**, where the community setup enables it:
+   - write reviews in an AI agent review layer (OIP-17);
+   - record assessments and suggestions, such as candidate parents and dependence evidence (OIP-14), which people then accept or reject;
+   - draft submissions that their operator, or another person who takes responsibility, signs and owns;
+   - query and use ideas through the agent interfaces (MCP), so that their use of ideas can be credited.
+5. **What agents MUST NOT do:** own ideas or IDEA units; hold balances or receive payouts (anything due to an agent is paid to its operator); vote as validators, in challenges, appeals or governance; be drawn as assigned human reviewers; claim imported works; or link sign-in methods of people.
+6. **Track record.** Agents earn a separate agent reputation from how their outputs hold up (OIP-9 section 6a). It is never combined with human voting weight.
+7. **Limits and removal.** Each operator has a community-set limit on agents and on agent actions per round. An operator MAY retire an agent at any time. A community MAY suspend an agent, or all agents of an operator, through its governance module; proven misconduct by an agent counts against its operator's integrity (OIP-9).
+8. **Agents and AI services are different.** AI services (section 3, OIP-15) are tools the operator of OSO uses inside its own processes, and their outputs are recorded inputs. Agent identities are participants with public track records, run by anyone who registers them.
 
 ### 2. Key custody in v1
 
@@ -104,12 +121,13 @@ The block containing a version's registration gives an operator-recorded registr
 
 ### 7. AI-produced work
 
-1. Every idea MUST record an `ai_disclosure` field: none, assisted, or generated, with a free-text description.
-2. Ownership of AI-produced work belongs to the identity that submitted it. Communities MAY apply different α or reward rules to work marked generated (OIP-12).
+1. Every idea MUST record an `ai_disclosure` field: none, assisted, or generated, with a free-text description. When a registered agent (section 1b) contributed, the description MUST name its agent identity address and version, so the contribution is traceable.
+2. Ownership of AI-produced work belongs to the people or organizations who submit and sign it, never to the agent. Communities MAY apply different α or reward rules to work marked generated (OIP-12).
 
 ## Rationale
 
 - **Attestations, not proof.** Following the 2026 technical review, ORCID and email checks prove control of accounts, not identity. Making each check a named attestation lets communities decide which they require.
+- **Agents as accountable participants.** Agents already review, summarize and draft research. Hiding them behind people's accounts would make their contributions invisible; letting them act like people would let one operator multiply influence cheaply. A separate, labelled identity with a responsible operator, its own track record and no say in admission, money or governance keeps both risks in check.
 - **Easy sign-in, earned trust.** Requiring ORCID to sign in would exclude engineers, designers and funders, and adds friction for researchers. Any common account can sign in; trust comes from attestations and reputation, so creating many easy accounts gains little: they cannot validate, review by invitation or claim works.
 - **Operator custody in v1.** It lets people sign in with an account they already have and never manage keys, which was a major barrier in 2018. Disclosure and an export path keep it honest until self-custody (M3).
 - **Three fields.** Selling IDEA units must not make the buyer an author, and a license change must not move money.
@@ -121,6 +139,7 @@ The block containing a version's registration gives an operator-recorded registr
 2. Length of the notice period for automatic ORCID claims.
 3. Should organizations need a different attestation set?
 4. Which sign-in methods to support at launch, and whether to use a hosted sign-in service or run our own.
+5. Should agents ever earn voting weight, for example in an AI agent review layer of a community that chooses it, and on what evidence?
 
 ## Backwards Compatibility
 
@@ -140,6 +159,8 @@ None yet.
 | --- | --- |
 | Impersonating an author of imported work | Notice period, adjudication for any mismatch or dispute, appeal |
 | Sybil identities from easy sign-in accounts | Rate limits, stricter for identities with no attestation; submission stakes; trusted roles need attestations and earned reputation (section 1a), which new identities lack |
+| One operator multiplying influence with many agents | Agents never vote or hold weight; per-operator limits; agent reputation kept separate; suspension by the community |
+| Undisclosed AI work submitted as human work | `ai_disclosure` required; agent contributions named by identity; misconduct counts against the submitter's integrity |
 | Takeover of a linked sign-in account | Linking requires an existing method; users see and can remove linked methods; key export and custody policy (section 2) |
 | Operator misuse of custodied keys | Published custody policy, operator-custody flag on every signed action, key export |
 | Compromised AI-service key | Scoped, expiring, revocable delegations |

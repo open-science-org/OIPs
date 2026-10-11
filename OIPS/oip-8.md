@@ -66,7 +66,7 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 The ledger MUST keep integer balances for these accounts:
 
-- **User accounts**, one per identity.
+- **User accounts**, one per person or organization identity. AI agent identities hold no balance; anything due to an agent is paid to its operator (OIP-10 section 1b).
 - **Idea accounts**, one per work ID.
 - **Claim-slot accounts**, one per imported author slot, holding value for authors who have not yet claimed.
 - **Unresolved-claims accounts**, one per imported idea whose author split is not yet adjudicated.

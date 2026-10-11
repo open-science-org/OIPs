@@ -73,7 +73,7 @@ Transitions caused by elapsed blocks (deadlines, window closings) run in block-e
 
 ### 3. Validator selection
 
-1. Each domain MUST publish a validator roster on the ledger. A user is eligible for the roster when their weight in the domain (OIP-9 section 6) is at least the community's minimum validator weight, plus any further rules in the community setup (OIP-12).
+1. Each domain MUST publish a validator roster on the ledger. AI agent identities MUST NOT be on it (OIP-10 section 1b). A user is eligible for the roster when their weight in the domain (OIP-9 section 6) is at least the community's minimum validator weight, plus any further rules in the community setup (OIP-12).
 2. A validator MUST be excluded from an idea if they are an owner, a co-owner with any owner within the last C blocks, an owner of any of the idea's proposed parents, or share an `email-domain` attestation with any owner (OIP-10 section 1).
 3. Selection MUST be reproducible: sort the eligible roster by `hash(seed ‖ idea version ID ‖ decision ID ‖ validator address)` and take the first N, where seed is the hash of the block in which the decision opened.
 4. In v1 the operator orders transactions and could try to influence the seed. Implementations MUST log the eligible roster and seed with each selection, and MUST NOT describe the procedure as manipulation-resistant.
