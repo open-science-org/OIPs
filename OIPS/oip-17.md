@@ -13,7 +13,7 @@ requires: 9, 11, 16
 
 ## Abstract
 
-Review in OSO happens in four layers that serve different purposes: a spam filter that admits ideas to the graph (validation, [OIP-11](./oip-11.md)); **assigned expert review**, by reviewers drawn for each admitted idea and paid from the OSO fund; **expert reader review**, by qualified experts who read the idea on their own at any time; and **community review**, by any OSO member interested in the idea. The Idea Platform whitepaper lets each sub-network and channel run its own review process, provided every process is open, selects reviewers fairly and transparently, keeps reviewing after publication, and never hides rejected work. This OIP records those principles, defines the layers, and specifies one simple process that every community uses in v1: three assigned reviewers per admitted idea, expert reader reviews and community reviews at any time, a score and a recommendation per review, and two ratings that keep updating, one from experts and one from the community, shown separately. Reviews are themselves ideas ([OIP-16](./oip-16.md)). Community-specific review processes come later.
+Review in OSO is a **pipeline of layers that each community configures**, because review serves different purposes and fields need different mixes. Each layer states who takes part, how they are selected, what a review contains, what it pays, and which rating it feeds. The reference module offers layer types: a spam filter (validation, [OIP-11](./oip-11.md)), assigned expert review (drawn and paid), expert reader review (any expert, any time), community review (any interested member), AI agent review (registered AI agent identities, [OIP-10](./oip-10.md) section 1b) and invited panels. The v1 default pipeline is the first four, with an expert rating and a community rating shown separately; AI agent review can be turned on by a community and feeds its own AI rating. Every configuration must keep the principles of the Idea Platform whitepaper: open, fair and transparent selection, perpetual, and nothing hidden. Reviews are themselves ideas ([OIP-16](./oip-16.md)).
 
 ## Motivation
 
@@ -40,8 +40,10 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 | Assigned review | A review by a reviewer drawn and invited for the idea (layer 2); paid |
 | Expert reader review | A review by a qualified expert who chose to review the idea (layer 3); unpaid in v1 |
 | Community review | A review by any signed-in OSO member interested in the idea (layer 4); unpaid |
+| Layer | One step of a community's review pipeline (section 2a) |
 | Expert rating | The current combined score of a version from assigned and expert reader reviews |
 | Community rating | The current combined score of a version from community reviews, shown separately |
+| AI rating | The combined score from AI agent reviews, where that layer is enabled, shown separately |
 | Review rating | A score given to a review itself, used for the reviewer's expertise (OIP-9) |
 
 ### 2. Principles for every review process
@@ -53,21 +55,40 @@ Any review process in OSO, including later community-specific ones, MUST:
 3. **Be perpetual.** Reviews can be added at any time after publication, and ratings keep changing as they arrive.
 4. **Hide nothing.** There is no hard reject: negative reviews, low ratings and their history stay public alongside the idea.
 
-### 2a. Four layers of review
+### 2a. Review pipelines
 
-| Layer | Who | Purpose | Paid | Counts toward |
+Review serves different purposes: keeping spam out, checking quality, keeping judgement current as work is used, and hearing from everyone who cares about an idea. No single process serves them all, and different fields need different mixes. So review is a **pipeline of layers** that each community configures.
+
+1. A community's review module (OIP-12) MUST be configured as an ordered list of **layers** in its setup. Each layer states:
+   - **who** takes part (a role or eligibility rule, for example drawn experts, any expert, any member, registered AI agents, an invited panel);
+   - **how** participants are selected (drawn, self-selected, invited by a named editor, or all eligible);
+   - **when** it runs (at admission, at a fixed time after, continuously) and how many reviews it seeks;
+   - **what** a review must contain (required questions, score scale, recommendation);
+   - **pay**, if any, and from which account;
+   - **which rating** its reviews feed, and how scores within it are combined.
+2. Every layer MUST keep the principles in section 2. Layers that use drawing or invitation MUST record who was selected and why.
+3. Each rating MUST be shown separately and labelled by its layer or group of layers. A community MAY also show a headline rating computed from the others, but only with published weights, and the separate ratings MUST remain visible.
+4. In v1, ratings MUST NOT change any balance, mint, weight set or α, whatever the configuration.
+
+**Layer types in the reference module**
+
+| Layer type | Who | Purpose | Default pay | Feeds |
 | --- | --- | --- | --- | --- |
-| 1. Spam filter (validation, OIP-11) | Validators drawn for the idea | Admission: the idea is not spam and meets stated, checkable criteria. Not a judgement of quality | Per-vote fee (OIP-8) | Admission only |
-| 2. Assigned expert review | k experts drawn for each admitted idea (section 5) | A careful, timely quality check of every admitted idea | Yes (section 6) | Expert rating; reviewer's expertise (OIP-9) |
-| 3. Expert reader review | Any expert in the domain who reads the idea, at any time (section 7) | Ongoing expert judgement as the field reads, uses and tries to reproduce the work | Not in v1 | Expert rating; reviewer's expertise |
-| 4. Community review | Any signed-in OSO member interested in the idea (section 7) | Feedback, questions and interest from the wider community, including readers outside the field | No | Community rating only |
+| Spam filter | Drawn validators (OIP-11) | Admission: not spam, meets checkable criteria | Per-vote fee (OIP-8) | Admission only |
+| Assigned expert review | k experts drawn per admitted idea (section 5) | A careful, timely check of every admitted idea | Yes (section 6) | Expert rating; expertise (OIP-9) |
+| Expert reader review | Any expert in the domain, any time (section 7) | Ongoing expert judgement as work is used and reproduced | No | Expert rating; expertise |
+| Community review | Any signed-in member (section 7) | Feedback and interest from the wider community | No | Community rating |
+| AI agent review | Registered AI agent identities (OIP-10 section 1b), section 7a | Fast, broad checks: statistics, citations, code that runs, consistency of claims and evidence | None, or to the agent's operator if the community chooses | AI rating; agent reputation (OIP-9 section 6a) |
+| Invited panel | Reviewers chosen by a named editor, with choices and reasons public | Journal-style review for a channel | Community choice | A channel rating |
 
-Layers 2 to 4 together make review perpetual: it starts at admission and never closes.
+New layer types are added as module versions (OIP-12).
+
+**v1 default pipeline:** spam filter, assigned expert review (k = 3), expert reader review and community review, with an expert rating and a community rating. AI agent review is available but off by default; a community turns it on in its setup.
 
 ### 3. Scope in v1
 
-1. In v1, every community MUST use the process in sections 2a and 4 to 10. Communities MAY set its parameters (section 11) but MUST NOT replace it.
-2. A later OIP will let sub-networks and channels define their own review processes as replaceable modules ([OIP-12](./oip-12.md)), for example invited panels, more reviewers or extra scoring dimensions. Any such process MUST keep the principles in section 2.
+1. In v1, communities configure their pipeline from the layer types above and the parameters in section 11. The rules in sections 4 to 10 apply to the layer types they describe.
+2. A later OIP may add layer types or let communities replace the review module entirely (OIP-12). Any configuration MUST keep the principles in section 2.
 
 ### 4. Eligibility and conflicts
 
@@ -100,6 +121,14 @@ The default selection method is a **weighted random draw with a load cap**. The 
 3. **Routing.** Reviews of every layer are registered without validation (OIP-11) and without a submission stake. Like any idea, a review MAY be challenged for spam or plagiarism under OIP-11 section 5; a review found to be spam or plagiarism is marked as such and stops counting toward any rating.
 4. Every review records its layer; interfaces MUST show the layer next to each review.
 
+### 7a. AI agent reviews
+
+1. Where a community enables the AI agent layer, any registered AI agent identity (OIP-10 section 1b) that meets the layer's rules MAY review Admitted or Published versions, or agents MAY be selected by the layer's selection rule (for example a draw weighted by agent reputation).
+2. An agent review MUST record the agent identity and version, and MUST follow the layer's required content, which SHOULD focus on checkable matters: whether statistics are consistent, citations support the claims they are cited for, code runs and reproduces reported numbers, and data match the description.
+3. Agent reviews feed only the AI rating. They MUST NOT count toward the expert or community ratings, toward any person's expertise, or toward admission, challenges or appeals.
+4. People MAY rate agent reviews for usefulness (section 10); those ratings build the agent's reputation (OIP-9 section 6a).
+5. Owners MAY reply to an agent review like any other. Agent reviews MAY be challenged; one that is wrong in a checkable way counts against the agent and its operator (OIP-10 section 1b).
+
 ### 8. Review content
 
 1. A review MUST be registered as an OIP-16 idea of type `review` whose `targets` names the reviewed version. An assigned or expert reader review MUST cover: what the work claims, whether the evidence supports the claims, whether the results could be reproduced from the methods, code and data provided, and what should change.
@@ -126,9 +155,10 @@ The default selection method is a **weighted random draw with a load cap**. The 
 
 1. A version's **expert rating** MUST be the weighted median of the scores of its assigned and expert reader reviews, each weighted by the reviewer's weight in the domain (OIP-9 section 6) at the round the review was recorded. Sort scores ascending (ties by reviewer address) and take the first score at which the running total of weights reaches at least half of the total weight.
 2. A version's **community rating** MUST be the median of the scores of its community reviews, shown only once at least m_comm community scores exist, and always with their number. Community reviews are not weighted by reputation, so the community rating is shown separately and never mixed into the expert rating.
-3. Both ratings MUST be recomputed whenever a review is added or stops counting, and their history MUST be kept.
-4. Replications of the version (OIP-16 type `replication`) MUST be shown next to the ratings as counts of each outcome.
-5. In v1, ratings MUST NOT change any balance, mint, weight set or α.
+3. Where the AI agent layer is enabled, the **AI rating** MUST be the median of agent review scores, or a median weighted by agent reputation if the layer says so, and MUST be shown separately and labelled as AI.
+4. All ratings MUST be recomputed whenever a review is added or stops counting, and their history MUST be kept.
+5. Replications of the version (OIP-16 type `replication`) MUST be shown next to the ratings as counts of each outcome.
+6. In v1, ratings MUST NOT change any balance, mint, weight set or α.
 
 ### 10. Review ratings
 
@@ -151,7 +181,9 @@ The default selection method is a **weighted random draw with a load cap**. The 
 
 ## Rationale
 
-- **Four layers, four purposes.** A spam filter keeps the graph clean; assigned review guarantees every admitted idea a careful look; expert readers keep judging the work as it is used and reproduced; and the community adds feedback and interest from people who are not experts in the field. Keeping the expert and community ratings apart lets both count without letting a crowd outvote experts, or experts silence the crowd.
+- **A configurable pipeline.** Fields review differently, and AI agents add a new kind of reviewer. Defining review as a pipeline of layer types, each with its own participants, selection, content, pay and rating, lets a community build the process it needs without a new module, while the principles keep every configuration open and fair.
+- **AI agents as reviewers, kept separate.** Agents can check statistics, citations and code at a scale people cannot, so they are useful reviewers. Their reviews feed their own rating and build their own reputation, so they inform people without displacing human judgement or letting one operator's agents outvote experts.
+- **Four default layers, four purposes.** A spam filter keeps the graph clean; assigned review guarantees every admitted idea a careful look; expert readers keep judging the work as it is used and reproduced; and the community adds feedback and interest from people who are not experts in the field. Keeping the expert and community ratings apart lets both count without letting a crowd outvote experts, or experts silence the crowd.
 - **Principles now, customization later.** The Idea Platform whitepaper lets each sub-network and channel run its own review, within four shared characteristics. Writing those characteristics down now keeps later community processes compatible, while one process for v1 keeps the first build and the pilot simple.
 - **Review after admission.** Proof of Idea separated a cheap spam filter (layer 1) from expert review (layer 2) and perpetual public review (layer 3). Ideas enter the graph quickly; review continues.
 - **Paid reviews from the fund.** The 2017 white paper's "paid and quality peer review" should not depend on authors paying, which would bring back pay-to-publish.
@@ -203,6 +235,9 @@ Scores and weights on one version: A 8 (weight 3), B 2 (weight 1), C 6 (weight 2
 - [ ] A community review counts only toward the community rating, which is hidden until m_comm scores exist.
 - [ ] A user without expert weight can write a community review but not an assigned or expert reader review.
 - [ ] A review registers without validation or stake, and a review found to be spam stops counting.
+- [ ] An agent review counts only toward the AI rating and agent reputation, never toward the expert or community rating.
+- [ ] With the AI agent layer off (the default), agents cannot review.
+- [ ] A headline rating, if configured, shows its weights, and the separate ratings remain visible.
 - [ ] An owner cannot review their own idea or rate reviews of it.
 - [ ] Adding a review changes the rating, and the old rating stays in its history.
 - [ ] Ratings change no balance, weight set or α.
@@ -220,6 +255,7 @@ None yet.
 | Overloading the most expert reviewers | Load cap (max_open); capped expertise in OIP-9 |
 | Retaliatory or biased reviews | Signed, public reviews; owners may reply; weighted median limits one reviewer's effect |
 | Coordinated scores | Weighted median; weights from reputation that cannot be bought; minimum reviewer weight |
+| Many agents from one operator flooding reviews | Agent reviews feed only the AI rating; per-operator limits; agent reputation starts at zero per version; suspension by the community |
 | A crowd brigading an idea through community reviews | Community rating kept separate from the expert rating, shown with its count, never affecting value or expertise; per-identity limits; spam challenges |
 | Authors punishing critical reviewers | Pay independent of the verdict; owners' ratings of reviews excluded from quality(r) |
 | Draining the OSO fund | k paid reviews per admitted idea only; admission requires a stake and validation |

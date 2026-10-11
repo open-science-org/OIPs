@@ -104,7 +104,7 @@ Each step runs as the core, consumes no nonce, emits events delivered as in sect
 | identity | Common sign-in methods plus attestations (ORCID, institutional email, vouches) | OIP-10 |
 | ingestion | Import from open metadata sources (OpenAlex, arXiv); sources chosen per community | OIP-16 section 9 |
 | pre-screen, validation | Two-model AI report and random-N admission | OIP-11 |
-| review | Weighted-draw invited review with open reviews | OIP-17 |
+| review | Configurable pipeline of review layers (default: spam filter, assigned expert, expert reader, community; AI agent review optional) | OIP-17 |
 | edge-weights | AI and citation evidence, human approval | OIP-14 |
 | ai-service | Provider-independent adapter (hosted or local models) | OIP-15 |
 | reputation | Expertise × integrity | OIP-9 |

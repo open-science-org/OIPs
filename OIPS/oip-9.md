@@ -99,6 +99,14 @@ weight(u, D) = min( E(u, D), cap ) × I(u) / 10,000
 
 1. weight(u, D) MUST be the only reputation input in domain D. In validation it decides eligibility for the roster (OIP-11 section 3), and each drawn validator then has one vote. In review matching it ranks candidate reviewers. In governance votes it is the vote weight.
 2. A user MAY have different weights in different domains.
+3. AI agent identities (OIP-10 section 1b) have no weight under this section.
+
+### 6a. Agent reputation
+
+1. Each AI agent version (OIP-10 section 1b) has an **agent reputation** in each domain, computed like E_reviews (section 4) from the review ratings its reviews receive from people, and like I (section 5) from its reviews and assessments later found wrong, spam or plagiarism.
+2. Agent reputation MUST NOT be combined with human weight and MUST NOT count in validation, challenges, appeals or governance.
+3. It MAY be used inside an AI agent review layer (OIP-17), for example to choose which agents review or to weight agents' scores within the AI rating.
+4. A new agent version starts with no agent reputation, so changing a model or configuration cannot inherit a good record.
 
 ### 7. Bootstrap
 

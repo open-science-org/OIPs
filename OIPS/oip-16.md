@@ -89,7 +89,7 @@ A version MUST be a JSON object with exactly these fields. Fields marked optiona
 | `cites` | list of objects | Optional | Declared citations: `{ "version_id" }` for works in the graph, or `{ "external_id" }` (for example `doi:10.1000/xyz`) for works outside it |
 | `targets` | object | Required for `review` and `replication`; `{}` otherwise | `{ "reviews": version_id }` or `{ "replicates": version_id, "outcome": ... }` |
 | `license` | string | Yes | An SPDX license identifier, for example `CC-BY-4.0`, or `LicenseRef-` followed by a URL-safe name for a license defined in the content |
-| `ai_disclosure` | object | Yes | `{ "level": "none" | "assisted" | "generated", "description": string }` (OIP-10 section 7) |
+| `ai_disclosure` | object | Yes | `{ "level", "description" }`, where `level` is `none`, `assisted` or `generated` (OIP-10 section 7); the description names any registered AI agent that contributed, by its agent identity address and version |
 | `owners` | list of objects | Yes for new submissions; empty for imports | Owners at registration: `{ "identity", "share_bps" }`, summing to 10,000 (OIP-10 section 4) |
 | `attribution` | list of objects | Yes | The people credited, in the order the work lists them: `{ "name", "orcid" }`, with `orcid` empty if unknown |
 | `external_ids` | object | Optional; required for imports | Identifiers elsewhere, for example `{ "doi": ..., "arxiv": ..., "openalex": ... }` |

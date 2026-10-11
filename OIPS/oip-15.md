@@ -31,6 +31,10 @@ Earlier OSO work predates current AI models; the AI-specific rules here are new.
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174.
 
+### 0. Services and agents
+
+This OIP covers **AI services**: models OSO's operator runs inside its own processes (pre-screen, assessments, chat), whose outputs are recorded inputs. **AI agent identities**, run by anyone and participating with public track records (for example by reviewing), are specified in OIP-10 section 1b and OIP-17. The same model can serve as both; the rules depend on the role.
+
 ### 1. Model independence
 
 1. AI services MUST be implemented as modules (OIP-12). The protocol MUST NOT depend on a particular model, provider or hosting method.
