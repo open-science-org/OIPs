@@ -89,14 +89,14 @@ The ledger MUST keep integer balances for these accounts:
    | Share | bps | Recipient |
    | --- | --- | --- |
    | Authors | 5,000 | The new idea's IDEA holders at the block of minting |
-   | OSO fund | 3,000 | The OSO fund |
+   | OSO fund | 3,500 | The OSO fund, which pays validator fees (section 4a) |
    | Cited ideas | 1,500 | The new idea's approved parents, as incoming value under [OIP-14](./oip-14.md), by approved weight |
-   | Validators | 500 | Equally to every validator who voted before the deadline, whatever their vote |
+
+   Validators receive no share of the mint. A mint exists only when an idea is admitted, so a mint share would pay validators more for admitting than for rejecting; they are paid by the per-vote fee instead.
 
 2. Within a share, amounts MUST be computed as follows, each with floor rounding:
    - Authors: to each IDEA holder `floor(share × units / 1,000,000)`.
    - Cited ideas: to each approved parent j `floor(share × w_j / 10,000)`, as incoming value at j.
-   - Validators: `floor(share / number of on-time validators)` each.
 3. All rounding residue, from the split and from every division within a share, MUST go to the OSO fund.
 4. If the new idea has no approved parents, the cited share MUST go to the OSO fund.
 5. The whole mint MUST be held in escrow until the idea is Published under [OIP-11](./oip-11.md): its challenge window of W blocks has closed with no challenge or appeal pending. No part of it MAY be spent or moved before then.
@@ -107,7 +107,7 @@ The ledger MUST keep integer balances for these accounts:
 
 1. Each validator who votes before the deadline on an admission, challenge or appeal decision under OIP-11 MUST receive a fee of f_val OSO from the OSO fund, whatever their vote and whatever the outcome.
 2. If the OSO fund cannot pay the fee, the decision MUST NOT start until it can; the idea waits (OIP-11 Waiting state).
-3. The validators' mint share (section 4) is paid in addition to the fee.
+3. The fee is the validators' only pay for a decision. It MUST NOT depend on the vote or the outcome, and validators MUST NOT receive any share of the mint.
 
 ### 5–7. Value flow
 
@@ -156,7 +156,7 @@ Reputation MUST NOT be transferable, delegable or purchasable, and MUST NOT be d
 | Base units per OSO | — | 10^18 | Protocol |
 | Supply cap | T | 10^12 OSO | Protocol |
 | Mint rate | R = 1 / R_inv | 10^-10 (R_inv = 10^10) | Protocol |
-| Mint split | — | 5,000 / 3,000 / 1,500 / 500 bps | Protocol |
+| Mint split | — | 5,000 / 3,500 / 1,500 bps (authors / fund / cited ideas) | Protocol |
 | Challenge window | W | TBD blocks | Community |
 | IDEA units per idea | — | 1,000,000 | Protocol |
 | Submission stake | s_sub | TBD OSO | Community |
@@ -180,7 +180,7 @@ The mint declines very slowly with R = 10^-10: about 99.99 OSO after one million
 
 ### Validators paid regardless of vote
 
-Paying validators by agreement with the majority rewards conformity. Validation is an admission check, so validators are paid for doing it on time; sanctions for admission decisions overturned on challenge belong to reputation.
+Paying validators by agreement with the majority rewards conformity. Validation is an admission check, so validators are paid for doing it on time; sanctions for admission decisions overturned on challenge belong to reputation. Proof of Idea also gave validators 5% of each mint, but a mint exists only when an idea is admitted, so that share would reward admitting over rejecting. It goes to the OSO fund instead, which pays the per-vote fees.
 
 ### IDEA tokens as the ownership shares
 
@@ -196,7 +196,7 @@ Option A is specified because exact, verifiable accounting is the v1 goal.
 1. Should R stay fixed, or change over time? Should the mint depend on anything besides remaining supply?
 2. Should revisions, reviews and replications mint, and how much?
 3. Values for W, s_sub, f_val, g_start and B.
-4. Should the 50/30/15/5 split become a community parameter?
+4. Should the 50/35/15 split become a community parameter?
 5. May owners ever issue more IDEA units, for example to raise funding?
 
 ## Backwards Compatibility
@@ -204,6 +204,7 @@ Option A is specified because exact, verifiable accounting is the v1 goal.
 This OIP replaces the token generation and reward sharing sections of Proof of Idea v0.0 (§2.4–2.5) and the token section of the OSO Idea Platform whitepaper v0.3 (§3.3). Changes from those documents:
 
 - The mint is held in escrow during a challenge window.
+- The validators' 5% share of each mint goes to the OSO fund; validators are paid only a per-vote fee, the same whatever they vote and whatever the outcome.
 - The cited share enters parents as incoming value under OIP-14, so each parent's α applies.
 - The payout waterfall, payout-graph rules and dust rules moved to OIP-14.
 - IDEA tokens are defined as the ownership shares, with fixed supply.
@@ -217,15 +218,14 @@ All amounts below are in whole OSO for readability; implementations use base uni
 
 ### Mint
 
-The first validated idea mints 100 OSO (taking B = 0 for readability; with a bootstrap pool the first mint is slightly smaller), with 5 validators voting on time and parents P1 (6,000) and P2 (4,000). Each validator also receives the fee f_val from the OSO fund.
+The first validated idea mints 100 OSO (taking B = 0 for readability; with a bootstrap pool the first mint is slightly smaller), with parents P1 (6,000) and P2 (4,000). Each of the 5 validators who voted on time receives the fee f_val from the OSO fund, as they would had the idea not been admitted.
 
 | Share | Amount |
 | --- | --- |
 | Authors | 50 |
-| OSO fund | 30 |
+| OSO fund | 35 |
 | P1, incoming value | 9 |
 | P2, incoming value | 6 |
-| Each of 5 validators | 1 |
 | **Total** | **100** |
 
 All 100 OSO, and the submission stake, stay locked until the idea is Published.
@@ -252,7 +252,7 @@ None yet. The v1 ledger will provide one.
 | Farming starter grants with many identities | One grant per identity, only after an attestation; identity rate limits (OIP-10); the grant covers only a few stakes, which are slashed for spam |
 | Spam submitted to farm mints | Submission stake, full escrow of the mint, burn on successful challenge; AI pre-screening and per-identity limits |
 | Low-quality but admissible work submitted to farm mints | Not prevented by admission, which is not a quality check; per-identity limits cap it, and mints do not raise voting weight except through the cited share received by parents (OIP-9). MUST be re-examined before tokens carry outside value |
-| Validators favouring admission to get paid | Per-vote fee paid whatever the outcome (section 4a) |
+| Validators favouring admission to get paid | Per-vote fee paid whatever the outcome, and no share of the mint, which exists only on admission (section 4a) |
 | Minting the same work twice | One mint per work ID, on first validation; revisions and imports do not mint |
 | Routing the 15% cited share to one's own ideas | Parent links and weights require approval, and self-citations are flagged (OIP-14) |
 | Owners and holders claiming more than exists | One payout right per idea; fixed IDEA supply |

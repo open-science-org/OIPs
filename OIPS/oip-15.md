@@ -71,7 +71,7 @@ Replay MUST read these records and MUST NOT re-run any model. GPU inference can 
 
 A community MAY use any combination of:
 
-1. **Hosted APIs** from model providers. Before sending unpublished work to a hosted API, the operator MUST check the provider's data-use terms, and MUST NOT use a provider that trains on submitted content unless the authors have agreed.
+1. **Hosted APIs** from model providers. Unpublished work MAY be sent to a hosted API only under the rules of section 7a.
 2. **Locally hosted open-weight models**, run by the operator or the community on its own hardware. Commonly used tools include:
 
    | Tool | Typical use |
@@ -107,6 +107,16 @@ A community MAY use any combination of:
 1. Content sent to a model MUST be treated as data. Prompts MUST separate instructions from submitted content and MUST request structured output.
 2. Outputs that do not match the required structure MUST be rejected and the task retried or marked for human attention.
 3. Text in a submission that appears to be directed at a model (for example, instructions to rate the work highly) MUST be reported to validators.
+
+### 7a. Protecting unpublished work
+
+Researchers' unpublished work is valuable and easy to leak: once it enters a provider's training data or logs, its authors lose control of it and may lose credit for it. OSO treats it accordingly.
+
+1. **No training, no retention.** Unpublished content (anything not yet Admitted, and anything under a sealed claim, OIP-10 section 5a) MUST be sent only to locally hosted models, or to hosted providers whose current terms, for the account OSO uses, exclude training on inputs and keep no copy beyond what processing requires. The operator MUST record which terms it relied on, by version and date.
+2. **Local by default where possible.** Where a pinned local model can do a required task for unpublished content, it SHOULD be used. Authors MAY require local-only processing (section 4).
+3. **Processing log.** For every submission, the ledger MUST record each AI processing of its content: task, model and version, provider or local host, the terms relied on, and the block. Owners MUST be able to see this log, together with the access log of people who have read their unadmitted work (OIP-16 section 5a.4), so they know exactly which systems and people have seen it.
+4. **OSO's own use.** Neither the operator nor any module MAY use submitted content to train or tune models without the owners' explicit, recorded consent.
+5. **After admission** content is public (OIP-16 section 5a), and these restrictions no longer apply, except that the processing log continues.
 
 ### 8. Parameters
 
@@ -163,7 +173,7 @@ None yet.
 | Prompt injection in submissions | Content treated as data, structured outputs, reporting to validators, two-model checks, human approval for payouts (OIP-14) |
 | Bias or error in a single model | Two model families for Class A; disagreements go to people |
 | Vendor lock-in or a provider withdrawing a model | Model-independent adapter; open-weight option; recorded outputs keep past decisions valid |
-| Leaking unpublished work | Provider data-use checks; local-only processing option |
+| Leaking unpublished work into AI training | Only local models or providers whose terms exclude training and retention; per-submission processing log visible to owners; no training on submissions without consent (section 7a) |
 | Draining the AI budget with spam | Stakes, per-identity limits, cheap filters first, per-round budget with waiting |
 | Unverifiable outputs from AI-service nodes | Not allowed until a later OIP defines audits |
 

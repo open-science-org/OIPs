@@ -79,6 +79,15 @@ Transitions caused by elapsed blocks (deadlines, window closings) run in block-e
 4. In v1 the operator orders transactions and could try to influence the seed. Implementations MUST log the eligible roster and seed with each selection, and MUST NOT describe the procedure as manipulation-resistant.
 5. If fewer than the required number of validators are eligible, the idea MUST enter Waiting. Quorum and conflict rules MUST NOT be relaxed.
 
+### 3a. Confidentiality of unadmitted work
+
+Validators are drawn from the idea's own field, so they are often its authors' competitors, and they see work before it is public.
+
+1. Content of a submission that has not been admitted MUST be readable only by its owners and the validators drawn for it (OIP-16 section 5a). A validator MUST NOT copy, share, use or disclose it, or let an AI system other than those allowed by OIP-15 section 7a process it, until the idea is admitted, and never if it is not admitted.
+2. Every read of unadmitted content by anyone other than its owners MUST be recorded in the idea's access log (OIP-16 section 5a.4), which the owners can see.
+3. Owners MAY choose **restricted access** when submitting: validators then see the version's metadata, its proposed parents and the pre-screen report, and see the full content only if they request it, giving a reason. Each request is logged. A validator who votes not-admit without requesting the content MUST give a reason that the metadata and report support.
+4. A breach of this section proven on challenge or appeal is misconduct: the validator receives the misconduct penalty in OIP-9 and is removed from the roster for a period set by the community.
+
 ### 4. Validation vote
 
 1. Each validator MUST vote admit or not-admit before a deadline of V blocks, giving a reason drawn from the stated criteria: provenance, required fields, duplication, spam, plagiarism, domain fit, or implausible parents and weights. A not-admit vote MAY be marked as spam.
@@ -166,6 +175,7 @@ None yet.
 | Validators biased toward admitting or rejecting | Fee paid whatever the vote; penalties for decisions overturned in either direction |
 | Frivolous challenges | Challenge stake forfeited on failure; one open challenge at a time; repeated evidence rejected |
 | Griefing by repeated challenges to freeze escrow | Window paused only while a challenge is open; each failed challenge costs s_ch |
+| Validators using or leaking competitors' unpublished work | Confidentiality duty, access log visible to owners, optional restricted access, misconduct penalty and roster removal (section 3a) |
 | Censorship of unpopular work | Admission criteria exclude scientific merit; Returned ideas get reasons and one appeal |
 | Plagiarism found after the window | Retraction stops further retained income and redirects it to the parents |
 | Small revisions adding up to new content | Difference measured from the last validated version; one validator confirms minor changes |

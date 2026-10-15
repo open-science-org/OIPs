@@ -80,6 +80,7 @@ Review serves different purposes: keeping spam out, checking quality, keeping ju
 | Community review | Any signed-in member (section 7) | Feedback and interest from the wider community | No | Community rating |
 | AI agent review | Registered AI agent identities (OIP-10 section 1b), section 7a | Fast, broad checks: statistics, citations, code that runs, consistency of claims and evidence | None, or to the agent's operator if the community chooses | AI rating; agent reputation (OIP-9 section 6a) |
 | Invited panel | Reviewers chosen by a named editor, with choices and reasons public | Journal-style review for a channel | Community choice | A channel rating |
+| Automated verification | Pinned, deterministic tools run by the operator: proof checkers (for example Lean), code re-execution, data checksums (section 7b) | Machine-checkable evidence that a proof checks or results reproduce | None | Verification results shown with the ratings; not a rating |
 
 New layer types are added as module versions (OIP-12).
 
@@ -129,6 +130,14 @@ The default selection method is a **weighted random draw with a load cap**. The 
 4. People MAY rate agent reviews for usefulness (section 10); those ratings build the agent's reputation (OIP-9 section 6a).
 5. Owners MAY reply to an agent review like any other. Agent reviews MAY be challenged; one that is wrong in a checkable way counts against the agent and its operator (OIP-10 section 1b).
 
+### 7b. Automated verification
+
+1. Where a community enables it, an automated verification layer runs pinned tools on an idea's content: for example checking a formal proof in a proof assistant such as Lean, re-running code against its data and comparing outputs with the reported numbers, or checking data files against their hashes.
+2. Each tool and version MUST be pinned in the community setup. Each run MUST be recorded as an input (OIP-13 section 6) with the tool and version, the content hashes checked, the result (passed, failed or could not run) and a log.
+3. Results MUST be shown next to the ratings as evidence, not combined into any rating. A community MAY also make a passing check an admission criterion for some subtypes (OIP-11 section 4), for example "the formal proof checks" for `paper/formal-proof`, since that is a checkable fact.
+4. **Untrusted code.** Code and data in submissions are untrusted. Every run MUST happen in a fresh, isolated environment with no network access, fixed limits on CPU, memory, disk and time, and no access to key custody (OIP-10 section 2), the content store's write interface, other submissions or any other operator system. A run that exceeds a limit or tries to break isolation MUST be recorded as `could not run`, with the reason.
+5. A passing check shows only what the tool checks, for example that a formal statement is proved, not that it matches the informal claim; interfaces MUST say what was checked.
+
 ### 8. Review content
 
 1. A review MUST be registered as an OIP-16 idea of type `review` whose `targets` names the reviewed version. An assigned or expert reader review MUST cover: what the work claims, whether the evidence supports the claims, whether the results could be reproduced from the methods, code and data provided, and what should change.
@@ -162,7 +171,7 @@ The default selection method is a **weighted random draw with a load cap**. The 
 
 ### 10. Review ratings
 
-1. Any user with weight greater than zero in the domain MAY rate a review once, with a whole number from 0 (useless) to 10 (careful and very useful), subject to section 4.2. The rating judges the review's care and usefulness, not agreement with it.
+1. Any user with weight greater than zero in the domain MAY rate a review once, with a whole number from 0 (useless) to 10 (careful and very useful), subject to section 4.3. The rating judges the review's care and usefulness, not agreement with it.
 2. OIP-9's `quality(r)` is the mean of these ratings, excluding ratings by owners of the reviewed idea (OIP-9 section 4).
 
 ### 11. Parameters
@@ -182,6 +191,7 @@ The default selection method is a **weighted random draw with a load cap**. The 
 ## Rationale
 
 - **A configurable pipeline.** Fields review differently, and AI agents add a new kind of reviewer. Defining review as a pipeline of layer types, each with its own participants, selection, content, pay and rating, lets a community build the process it needs without a new module, while the principles keep every configuration open and fair.
+- **Machines check what machines can check.** Formal proofs and reproducible code can be verified mechanically and cheaply. Recording those results as evidence lets reviewers spend their time on what tools cannot judge, while keeping clear what was and was not checked.
 - **AI agents as reviewers, kept separate.** Agents can check statistics, citations and code at a scale people cannot, so they are useful reviewers. Their reviews feed their own rating and build their own reputation, so they inform people without displacing human judgement or letting one operator's agents outvote experts.
 - **Four default layers, four purposes.** A spam filter keeps the graph clean; assigned review guarantees every admitted idea a careful look; expert readers keep judging the work as it is used and reproduced; and the community adds feedback and interest from people who are not experts in the field. Keeping the expert and community ratings apart lets both count without letting a crowd outvote experts, or experts silence the crowd.
 - **Principles now, customization later.** The Idea Platform whitepaper lets each sub-network and channel run its own review, within four shared characteristics. Writing those characteristics down now keeps later community processes compatible, while one process for v1 keeps the first build and the pilot simple.
@@ -238,6 +248,7 @@ Scores and weights on one version: A 8 (weight 3), B 2 (weight 1), C 6 (weight 2
 - [ ] An agent review counts only toward the AI rating and agent reputation, never toward the expert or community rating.
 - [ ] With the AI agent layer off (the default), agents cannot review.
 - [ ] A headline rating, if configured, shows its weights, and the separate ratings remain visible.
+- [ ] An automated verification run records the tool, version, content hashes and result, and is shown as evidence, not as a rating.
 - [ ] An owner cannot review their own idea or rate reviews of it.
 - [ ] Adding a review changes the rating, and the old rating stays in its history.
 - [ ] Ratings change no balance, weight set or α.
@@ -258,6 +269,7 @@ None yet.
 | Many agents from one operator flooding reviews | Agent reviews feed only the AI rating; per-operator limits; agent reputation starts at zero per version; suspension by the community |
 | A crowd brigading an idea through community reviews | Community rating kept separate from the expert rating, shown with its count, never affecting value or expertise; per-identity limits; spam challenges |
 | Authors punishing critical reviewers | Pay independent of the verdict; owners' ratings of reviews excluded from quality(r) |
+| Submitted code attacking the operator's systems during automated verification | Fresh isolated environment per run, no network, resource limits, no access to custodied keys or other systems (section 7b) |
 | Draining the OSO fund | k paid reviews per admitted idea only; admission requires a stake and validation |
 
 ## Copyright

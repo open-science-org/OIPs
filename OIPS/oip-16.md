@@ -112,7 +112,7 @@ A version MUST be a JSON object with exactly these fields. Fields marked optiona
 1. The operator MUST run a content store that keeps files uploaded with submissions and text written inside OSO (reviews, replies, authors' notes), addressed by their SHA-256 hash.
 2. In v1 the content store is central: one store run by the operator, behind the storage module interface ([OIP-12](./oip-12.md)). The long-term plan is decentralized storage (section 5a.7).
 3. On upload, the store MUST compute the hash itself and reject the upload if it differs from the hash in the version. A stored file's `uri` MUST be `oso:sha256:<hex>`. This is a location-independent name, not an address: any store or copy that holds bytes with that hash answers to it, and interfaces resolve it through whichever copy they trust, checking the hash.
-4. Content of admitted and published ideas MUST be publicly readable without sign-in. Content of a submission that has not been admitted MAY be readable only by its owners and the validators drawn for it.
+4. Content of admitted and published ideas MUST be publicly readable without sign-in. Content of a submission that has not been admitted MUST be readable only by its owners and the validators drawn for it, under the confidentiality rules of OIP-11 section 3a. Every read of unadmitted content by anyone other than its owners MUST be recorded on the ledger in the idea's **access log**: the reader's identity, the file hash and the block. Owners MUST be able to see the access log next to the AI processing log (OIP-15 section 7a).
 5. The store MUST enforce a maximum file size, a community parameter, and SHOULD keep at least one backup in a separate location.
 6. Bytes MAY be removed only for a legal reason or under OIP-11 (spam or plagiarism). Removal MUST be recorded on the ledger with the reason; the version, its hash and its ID remain, so the record of what was claimed survives.
 7. **Toward decentralized storage.** Because content is named by hash, it can be copied to decentralized storage (for example IPFS with pinning, or a permanent-storage network) without changing any version or ID: an `oso:sha256:` name stays the same and simply gains more places it can be fetched from. A later OIP will specify replication, who pays for it, and when the central store stops being the primary copy.
@@ -132,6 +132,7 @@ Each work MUST have one registry record, created when its first version is regis
 | --- | --- |
 | List of version IDs in registration order, and the current version | This OIP, section 8 |
 | Origin date of each version | OIP-14 section 3 |
+| Priority time of a revealed sealed claim, its kind (exact or earlier draft) and the draft's hash | OIP-10 section 5a |
 | Routing status of each version | OIP-11 section 1 |
 | Community the work was submitted to | OIP-12 section 5 |
 | Current owners and IDEA units | OIP-8 section 9, OIP-10 section 4 |
