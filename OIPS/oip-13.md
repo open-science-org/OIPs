@@ -67,9 +67,10 @@ The state hash MUST be a Merkle root over all state entries, sorted by key, usin
 
 1. Every block MUST be committed to a public git repository (GitHub in v1; the host is replaceable), one file per block, with a signed commit, within one round (OIP-14) of being produced.
 2. A state snapshot MUST be committed at least once per round.
-3. The latest block hash SHOULD be published at least once per round to independent places outside GitHub (for example, mirrors run by community members), so that a rewritten history can be detected.
-4. The operator MUST NOT rewrite published history. A correction MUST be a new transaction.
-5. The log is tamper-evident relative to published checkpoints and independent mirrors. It MUST NOT be described as immutable.
+3. **Independent timestamps.** At least once per round, the latest block hash MUST be anchored with at least one independent timestamping service, for example OpenTimestamps (which records hashes in the Bitcoin blockchain) or a trusted timestamp authority following RFC 3161, and the timestamp proofs MUST be published with the log. An anchor proves that the block, and everything before it, existed no later than the anchor's time, without trusting the operator. Blocks containing sealed priority claims MUST be anchored sooner, within t_anchor (OIP-10 section 5a).
+4. The latest block hash SHOULD be published at least once per round to independent places outside GitHub (for example, mirrors run by community members), so that a rewritten history can be detected.
+5. The operator MUST NOT rewrite published history. A correction MUST be a new transaction.
+6. The log is tamper-evident relative to published checkpoints and independent mirrors. It MUST NOT be described as immutable.
 
 ### 5. Replay
 

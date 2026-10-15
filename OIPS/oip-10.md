@@ -107,7 +107,19 @@ AI agents increasingly read, review and produce research. OSO gives them identit
 
 ### 5. Registration time
 
-The block containing a version's registration gives an operator-recorded registration time. Interfaces MUST NOT present it as independent proof of priority.
+The block containing a version's registration gives an operator-recorded registration time. Because block hashes are anchored to independent timestamping services (OIP-13 section 4), anyone can also show that the registration existed **no later than** the anchor's time, without trusting the operator. Interfaces MUST present registration times as "registered by" this time, not as proof of who had an idea first.
+
+### 5a. Sealed priority claims
+
+Researchers often need to show when they had a result without publishing it yet, for example while a proof is checked or a paper is drafted. A sealed claim records that, privately.
+
+1. An identity MAY register a **sealed claim**: a transaction containing only `commitment = sha256(content_hash ‖ salt)`, where `content_hash` is the SHA-256 of the sealed file (OIP-16 section 5; to seal several files, seal one archive of them) and `salt` is a random value of at least 32 bytes kept secret by the claimant. The salt stops anyone from guessing the content by hashing candidates. The transaction MUST NOT contain the content, its hash, a title or any description.
+2. **Prompt anchoring.** The operator MUST anchor the hash of every block that contains a sealed claim within t_anchor of producing it (OIP-13 section 4), and publish the timestamp proof with the log. The anchor's time, not the block's day label, is the claim's **priority time**: independent evidence that the claimant held exactly that content no later than then. Priority disputes can turn on hours, so t_anchor is short (v1 value: 10 minutes, a community parameter) and at least one anchor SHOULD come from a service that returns a time at once, such as an RFC 3161 timestamp authority; an OpenTimestamps proof completes only when it reaches a Bitcoin block, usually within hours.
+3. **Reveal.** Later, the claimant MAY reveal the claim by registering an idea version (OIP-16), carrying in the same transaction the claim's salt and `sealed_hash`, the SHA-256 of the file that was sealed. The ledger MUST reject the reveal unless the claimant is one of the version's owners and `sha256(sealed_hash ‖ salt)` equals the commitment. A reveal is one of two kinds:
+   - **Exact:** `sealed_hash` equals the version's `main` content hash. The version's registry record gains the claim's priority time.
+   - **Earlier draft:** `sealed_hash` differs, because the work was revised after it was sealed. The sealed file MUST be uploaded to the content store (OIP-16 section 5a), under the same access rules as the version's content, so it becomes public when the version is admitted. The registry records the priority time as applying to that draft, not to the version, and interfaces MUST show it as "an earlier draft was held by" that time, with a link to the draft, so readers can compare what was held with what was published.
+4. The priority time is evidence for credit, disputes and plagiarism challenges (OIP-11 section 5), and interfaces MUST show it next to the version with its timestamp proofs and the kind of reveal. It does **not** change the version's origin date (OIP-14 section 3): payout edges still follow the time of registration, so a revealed claim cannot reach back and become a parent of work registered in between.
+5. A claim that is never revealed reveals nothing. Claims are rate-limited per identity like other transactions.
 
 ### 6. Imported works
 
@@ -140,6 +152,7 @@ The block containing a version's registration gives an operator-recorded registr
 3. Should organizations need a different attestation set?
 4. Which sign-in methods to support at launch, and whether to use a hosted sign-in service or run our own.
 5. Should agents ever earn voting weight, for example in an AI agent review layer of a community that chooses it, and on what evidence?
+6. Should a sealed claim be revealable by only some of its future owners, and how are co-authors added to a claim made by one of them?
 
 ## Backwards Compatibility
 
@@ -163,6 +176,8 @@ None yet.
 | Undisclosed AI work submitted as human work | `ai_disclosure` required; agent contributions named by identity; misconduct counts against the submitter's integrity |
 | Takeover of a linked sign-in account | Linking requires an existing method; users see and can remove linked methods; key export and custody policy (section 2) |
 | Operator misuse of custodied keys | Published custody policy, operator-custody flag on every signed action, key export |
+| Someone other than the claimant revealing a sealed claim, for example after its salt leaks | The ledger accepts a reveal only when the claimant is an owner of the revealed version |
+| A sealed claim's time stretched by slow anchoring | Blocks with sealed claims anchored within t_anchor; the anchor time, not the operator's day label, is the priority time |
 | Compromised AI-service key | Scoped, expiring, revocable delegations |
 | Attribution changed to redirect money | Attribution and payout rights are separate fields |
 

@@ -88,7 +88,7 @@ I(u) = (upheld(u) + 1) × 10,000 / (decided(u) + 2)  −  penalty(u)      (floor
 1. `decided(u)` is the number of u's votes (admission, challenge and appeal decisions under OIP-11) whose decision has become final: no challenge or appeal can still change it.
 2. `upheld(u)` is the number of those votes that were not overturned. A vote is overturned only when the final decision went against it **because a later challenge or appeal reversed the decision it took part in** (OIP-11 section 5). Being in the minority of a decision that stood is never an overturn.
 3. Disagreeing with other validators is never a violation.
-4. `penalty(u)` is the sum of penalties for proven violations: p_deadline for each missed vote deadline, p_overturn for each overturned vote (in either direction: a wrongful admit or a wrongful not-admit), and p_misconduct for proven plagiarism or spam by u. Each penalty decays with h_idea.
+4. `penalty(u)` is the sum of penalties for proven violations: p_deadline for each missed vote deadline, p_overturn for each overturned vote (in either direction: a wrongful admit or a wrongful not-admit), and p_misconduct for proven plagiarism or spam by u, or a proven breach of confidentiality as a validator (OIP-11 section 3a). Each penalty decays with h_idea.
 5. A new user starts with I = 5,000.
 
 ### 6. Voting weight
